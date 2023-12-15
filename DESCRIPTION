@@ -1,0 +1,12 @@
+Package: RTutorImpactsGMCrops
+Type: Package
+Title: RTutor problem set Impacts-Genetically-Modified-Crops
+Version: 0.1
+Date: 2023-15-12
+Author: Daria Palitzsch
+Maintainer: Daria Palitzsch <daria.palitzsch@web.de>
+Description: RTutor problem set - Impacts of Genetically-Modified Crops
+License: Not yet licensed by the author. The default suggestion for licensing is
+	Problem set content: Creative Commons (CC BY-SA)
+	Package code: GPL >= 2.0
+Depends: RTutor, dplyr, skimr, ggplot2, stargazer, tidyr, lfe

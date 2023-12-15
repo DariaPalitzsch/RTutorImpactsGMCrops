@@ -1,0 +1,35 @@
+
+orgvar | var | descr
+
+crop | crop | name of the crop.
+year | year | calendar year of the observation.
+--- | yield | crop yield in tonnes/hectare per year and country.
+--- | GM_countries | based on GMdefacto. Factor variable that indicates whether a country has ever adopted any GM varieties. 
+period | period | based on year. Factor variable that is `pre` if year<1995 and `exp` otherwise. 
+country | country | name of the country
+--- | exp | dummy variably based on period that is 1 if period=`exp` and 0 otherwise
+--- | GM | dummy variable based on GM_countries that is 1 if GM_countries=`GM region` and 0 otherwise
+lnyield | lnyield | natural logarithm of yield 
+--- | grouped_yield | average yield per crop, year and category of `GM_countries`
+GMdefacto | GMdefacto | The de facto adoption year of GM varieties, defined as the year of the first commercial GM harvest. 
+--- | crop_maize | dummy variable that is 1 if crop=`maize` and 0 otherwise. 
+--- | exp_GM | interaction variable between `exp` and `GM`. 
+--- | exp_GM_crop | interaction variable between `exp`, `GM` and `crop_maize`. 
+--- | exp_crop | interaction variable between `exp` and `crop_maize`.
+--- | GM_crop | interaction variable between `GM` and `crop_maize`.
+--- | country_yr | interaction variable between country and year
+--- | crop_yr | interaction variable between crop and year
+--- | country_crop | interaction variable between country and crop
+relative_yr | relative_yr | Distance in years to the first unrestricted harvest of GM varieties of a given crop. Negative values mean that the current year is before the first unrestricted harvest. Based on GMdefacto. 
+GMwithdrawn | GMwithdrawn | Year when GM approval was withdrawn, defined as the first year in which no GM crops could be legally harvested. Variable is 0 otherwise. 
+GMtrend | GMtrend | The number of successive GM harvests up until, and including, the current year. Based on GMdefacto and GMwithdrawn.
+GMtrendc_cotton | GMtrendc_cotton | The number of successive GM cotton harvests up until, and including, the current year. Based on GMdefacto and GMwithdrawn.
+GMtrendc_soybean | GMtrendc_soybean | The number of successive GM soybean harvests up until, and including, the current year. Based on GMdefacto and GMwithdrawn.
+GMtrendc_maize | GMtrendc_maize |nThe number of successive GM maize harvests up until, and including, the current year. Based on GMdefacto and GMwithdrawn.
+GMtrendc_rape | GMtrendc_rapeseed | The number of successive GM rapeseed harvests up until, and including, the current year. Based on GMdefacto and GMwithdrawn.
+
+isocode | isocode | ISO3 country code.
+harvestarea | harvestarea | Harvested area of a given crop (hectares).
+control_broad | control_broad | Indicator variable taking the value 1 if a crop is included in the baseline sample.
+--- | balance | sum of control_broad grouped by country (isocode) and crop.
+production | production | Crop production in tonnes.
