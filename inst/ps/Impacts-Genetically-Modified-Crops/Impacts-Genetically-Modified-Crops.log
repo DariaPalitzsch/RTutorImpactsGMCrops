@@ -1,0 +1,8 @@
+{"type":["init_ps"],"time":["2023-12-18 09:28:21"],"user":["default_user"],"umph":[1702888101.4776],"ok":[true]}
+,
+{"type":["check_chunk"],"time":["2023-12-18 09:28:26"],"user":["default_user"],"umph":[1702888106.1199],"ok":[true],"chunk":[1],"ex":[2],"e.ind":[0],"code":["data <- readRDS(\"data_crop.rds\")"],"message":[""]}
+,
+{"type":["check_chunk"],"time":["2023-12-18 09:28:30"],"user":["default_user"],"umph":[1702888110.7495],"ok":[true],"chunk":[1],"ex":[2],"e.ind":[0],"code":["data <- readRDS(\"data_crop.rds\")"],"message":[""]}
+,
+{"type":["init_ps"],"time":["2023-12-18 09:29:05"],"user":["default_user"],"umph":[1702888145.418],"ok":[true]}
+,

@@ -60,12 +60,12 @@ Once you complete an exercise, proceed to the next page by clicking on `Go to ne
 
 In this chapter, our focus is on exploring the structure of the underlying data set and becoming familiar with the individual variables that are crucial for the subsequent analysis. 
 
-Before we start, we first must read in the data set. It is stored in an RDS-file. We can use the command `readRDS()` to load the file named `data_crop.RDS`. We store the file in the variable `data`. 
+Before we start, we first must read in the data set. It is stored in an RDS-file. We can use the command `readRDS()` to load the file named `data_crop.rds`. We store the file in the variable `data`. 
 
 <b style="color:green">Task:</b> Just `check` the following code chunk to read in the data set. 
 
 ```{r "2_1"}
-data <- readRDS("data_crop.RDS")
+data <- readRDS("data_crop.rds")
 ```
 
 Once we have loaded the data set, we aim to get to know its structure in more detail. In R, various functions are available for this purpose.
@@ -162,12 +162,12 @@ In the following chapter, this basis is further developed, focusing on the devel
 
 In this chapter we will take a closer look at the yields of the four most important crops and become more familiar with the variable `GM_country` that indicates whether a country has ever adopted any GM varieties. 
 
-As already mentioned in the last chapter, the four crucial crops are cotton, maize, soybean and rapeseed. Before we start with the analysis, we have to load the data set `data_crop.RDS` again. 
+As already mentioned in the last chapter, the four crucial crops are cotton, maize, soybean and rapeseed. Before we start with the analysis, we have to load the data set `data_crop.rds` again. 
 
 <b style="color:green">Task:</b> Click `edit`and then `check` to read in the data set. 
 
 ```{r "3_1"}
-data <- readRDS("data_crop.RDS")
+data <- readRDS("data_crop.rds")
 ```
 
 Next, we want to construct a data set named `data_mean` that contains the average yields for the crops `cotton`, `soybean`, `maize` and `rapeseed` per year. For this purpose, the `dplyr` package is suitable. We already learned about this package in the preceding chapter. 
@@ -230,13 +230,13 @@ Take a look at the graph where the lines represent the four crucial crops for ou
 Rapeseed also demonstrates an upward trend, but with a less steep curve. The rapeseed yields range from approximately $2.75$ to $2.5$.
 Soybean and cotton have similar trends and are at lower levels compared to the others. Both crops show minimal growth, with yields hovering around $1.5$.
 
-As previously mentioned, our crop graph does not differentiate between GM and Non-GM harvests. We now want to explore this distinction by examining the variable `GM_country`, which will be crucial for our subsequent analyses. This variable informs us about whether a country has ever adopted any GM varieties. `GM_country` is derived from the variable `GMdefacto`, which contains the year of the first commercial GM harvest in the respective country and is $0$ if the country has never adopted any GM variety. Therefore, the variable `GM_country` is equal to "GM-region" if `GMdefacto` contains a year for this country and "NonGM-region" otherwise. To visualize the countries, we can use a world map. The required coordinates are stored in the data set `data_map.RDS`.
+As previously mentioned, our crop graph does not differentiate between GM and Non-GM harvests. We now want to explore this distinction by examining the variable `GM_country`, which will be crucial for our subsequent analyses. This variable informs us about whether a country has ever adopted any GM varieties. `GM_country` is derived from the variable `GMdefacto`, which contains the year of the first commercial GM harvest in the respective country and is $0$ if the country has never adopted any GM variety. Therefore, the variable `GM_country` is equal to "GM-region" if `GMdefacto` contains a year for this country and "NonGM-region" otherwise. To visualize the countries, we can use a world map. The required coordinates are stored in the data set `data_map.rds`.
 
 <b style="color:green">Task:</b> Just `check` the following code to load the data set and show the `head()` of it. 
 
 ```{r "3_4"}
 #load data set
-map <- readRDS("data_map.RDS")
+map <- readRDS("data_map.rds")
 #show head
 head(map)
 ```
@@ -289,7 +289,7 @@ Before we start with our analyses, we have to load the data set again.
 <b style="color:green">Task:</b> Just `check` the following code. 
 
 ```{r "4_1"}
-data <- readRDS("data_crop.RDS")
+data <- readRDS("data_crop.rds")
 ```
 
 As we have learned in the previous chapters, the underlying paper focuses on four crucial crops. In our introduction of the DiD approach we limit our analysis to the crop type `cotton`.
@@ -656,7 +656,7 @@ Before we look at all four crucial crops in the next chapter, we keep it simple 
 <b style="color:green">Task:</b> `Edit` and `check` the following code to read in our data set again.
 
 ```{r "5_1"}
-data <- readRDS("data_crop.RDS")
+data <- readRDS("data_crop.rds")
 ```
 
 Analogously to the initial DiD approach in Chapter 3, we categorize two groups based on the variable `GM_country`:
@@ -1057,7 +1057,7 @@ This extension addresses a significant limitation in our previous analyses. Prio
 <b style="color:green">Task:</b> Just `check` the following code to load the data set once again. 
 
 ```{r "6_1"}
-data <- readRDS("data_crop.RDS")
+data <- readRDS("data_crop.rds")
 ```
 
 Let us start our analysis by examining the crop specific variables of `GMtrend`. To demonstrate how this variables are computed, we display the variables `GMtrendc_cotton`, `GMdefacto`, `GMwithdrawn` along with their corresponding years. Since the value of `GMdefacto` depends on the specific country, we only present observations in the country Brazil. Additionally, we filter the observations to include only cases where `GMtrendc_cotton` is not equal to $0$. 

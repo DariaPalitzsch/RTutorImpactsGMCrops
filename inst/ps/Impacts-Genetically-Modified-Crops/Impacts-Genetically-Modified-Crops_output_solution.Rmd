@@ -1,31 +1,44 @@
 
+---
+title: Problem Set Impacts-Genetically-Modified-Crops
+output: 
+  html_document: 
+    keep_md: yes
+    toc: yes
+---
 
-#< ignore
+```{r setup, include=FALSE, echo=FALSE}
+# Load libraries and source extra code
+library(dplyr)
+library(skimr)
+library(ggplot2)
+library(stargazer)
+library(tidyr)
+library(lfe)
+library(RTutor)
 
-```{r "setup"}
-run = function(){
-  library(RTutor)
-  library(yaml)
-  # Adapt the working directory below and then run setup chunk in RStudio.
-  #setwd("~/Desktop/SoSe23/Bachelor_thesis")
-  ps.name = "Impacts-Genetically-Modified-Crops"; sol.file = paste0(ps.name,"_sol.Rmd")
-  libs = c("dplyr", "skimr", "ggplot2", "stargazer", "tidyr", "lfe") # character vector of all packages you load   in the problem set
-  
-  #name.rmd.chunks(sol.file)
-  create.ps(sol.file=sol.file, ps.name=ps.name, user.name = NULL, libs=libs, stop.when.finished=FALSE, addons =    "quiz", var.txt.file = "GM_thesis_var.txt")
-            
-  # The following line directly shows the problem set 
-  # in the browser
-  show.ps(ps.name,launch.browser=TRUE,
-    auto.save.code=FALSE,sample.solution=FALSE)
 
-}
+# Options for rendering data frames
+# If you knit to a Word docx file, try
+# 
+# data.frame.theme="word" 
+# 
+# (needs RStudio > 1.2.1)
+# 
+# You can also set the options like
+# table.max.cols as chunk options
+# Makes sense if there are too many, too wide
+# columns in some chunks
 
-run()
+RTutor::set.knit.print.opts(data.frame.theme="code", table.max.rows=25, table.max.cols=NULL, round.digits=5, signif.digits=8)
 
+
+# continue knitting even if there is an error
+knitr::opts_chunk$set(error = TRUE) 
 ```
 
-#>
+
+
 
 ## Impacts of genetically modified crops
 
@@ -84,10 +97,8 @@ Before we start, we first must read in the data set. It is stored in an RDS-file
 
 <b style="color:green">Task:</b> Just `check` the following code chunk to read in the data set. 
 
-```{r "1 a)"}
-#< task_notest
+```{r "2_1"}
 data <- readRDS("data_crop.rds")
-#>
 ```
 
 Once we have loaded the data set, we aim to get to know its structure in more detail. In R, various functions are available for this purpose.
@@ -95,17 +106,18 @@ To gain an initial impression, the function `head()` is useful. By calling `head
 
 <b style="color:green">Task:</b> Just `check` the following code.
 
-```{r "1 b)"}
-#< task_notest
+```{r "2_2"}
 head(data)
-#>
 ```
  
 <br/>
 
 As you can see, our data contains numerous variables, all of which will play a role in our following analyses. I have prepared the data set as the original one contained over 200 variables. For now, let's focus on the most essential ones. In R, we can use the so-called `dplyr` package for data manipulation tasks, such as picking specific variables. If you are not yet familiar with the package, I recommend checking the following info block.
 
-#< info "dplyr"
+
+***
+
+### Info: dplyr
 The `dplyr` package in R is a powerful and widely used tool for data manipulation. It provides a collection of functions designed for various manipulation tasks. The distinctive feature of this packages is the use of the `pipe` symbol, denoted as **%>%**. It is helpful when you want to perform multiple manipulations on one data set. With the help of the pipe, you can simply write them one after, elimination the need to repeatedly call the data set in each operation. 
 **Example**: You can filter the data set `data` on the country "Germany" and store only the yields of it by simply calling:
 ```
@@ -123,20 +135,23 @@ The most important dplyr-commands are:
 
 The last two commands are often used together to group by a variable (e.g. country) and then show statistics such as the mean of a certain variable per group afterwards.  
 If you want to read more about the `dplyr`-package, have a look at the official documentation [here](https://www.rdocumentation.org/packages/dplyr/versions/1.0.10).
-#>
+
+***
+
 
 Before we use this package to succeed with our analysis, let´s engage in a short quiz: 
 
-#< quiz "Overview with dplyr"
-question: What do you think which command fits best to show certain columns?
-sc: 
-- filter()
-- mutate()
-- select()*
-- arrange()
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: What do you think which command fits best to show certain columns?
+
+- filter() [ ]
+
+- mutate() [ ]
+
+- select() [x]
+
+- arrange() [ ]
+
 
 <br/>
 
@@ -145,13 +160,12 @@ Use the command to keep the following variables: `year`, `yield`, `crop`, `count
 
 <b style="color:green">Task:</b> Load the necessary package by calling it in the command `library()`. Additionally, fill in the data set for which we want show the `head()`.
 
-```{r "1 c)"}
-#< fill_in
-library(___)
-data_short <- data %>% 
-  select(c(year, yield, crop, country, GM_country, period)) 
-head(___)
-#>
+```{r "2_3"}
+# library(___)
+# data_short <- data %>% 
+#   select(c(year, yield, crop, country, GM_country, period)) 
+# head(___)
+
 #load the required package
 library(dplyr)
 #manipulate the data
@@ -168,10 +182,8 @@ Before delving into that, let us take a closer look at the two numeric variables
 
 <b style="color:green">Task:</b> Just `check` the following code chunk.
 
-```{r "1 d)", fig.width=12}
-#< task_notest
+```{r "2_4",fig.width=12}
 summary(data_short)
-#>
 ```
 
 The `summary()` command provides us with some statistical information about our variables. The first two variables in our output (`year` and `yield`) are numeric, so we obtain ratios such as the mean, minimum, and maximum. The `year` variable indicates the year in which the corresponding yield was generated. The observation period extends from $1986$ to $2019$. Yields represent the average production in tons per hectare of harvested area in each country per year, ranging from $0.000$ to $135.9231$. Given that the mean value of $6.7639$ is close to the minimum, the maximum value might be an outlier.
@@ -181,10 +193,9 @@ By using the `$` we can refer to a specific column in our data set. If we were t
 
 <b style="color:green">Task:</b> Replace the `___`  with the required column.
 
-```{r "1 e)"}
-#< fill_in 
-unique(data$___)
-#>
+```{r "2_5"}
+# unique(data$___)
+
 unique(data$crop)
 ```
 
@@ -196,9 +207,12 @@ If you are interested in the number and names of countries where a GM version of
 
 **Note**: This information is not relevant for our further analyses. 
 
-#< info "Crucial Crops" 
 
-```{r echo=FALSE}
+***
+
+### Info: Crucial Crops
+
+```{r "2_6",echo=FALSE}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -240,7 +254,9 @@ GM rapeseed, on the other hand, is commercially grown in only three countries wo
 It is noteworthy that in the United States, all four crops have a GM version authorized for cultivation.
 In Argentina, Brazil and Paraguay GM versions of cotton, maize and soybean have been legalized throughout the observation period. This suggests that South American countries may play a significant role in GM cultivation. We will revisit this aspect in the next chapter when we take a closer look at the GM-approving countries.  
 
-#> 
+
+***
+
 
 **Summary** 
 
@@ -258,24 +274,23 @@ As already mentioned in the last chapter, the four crucial crops are cotton, mai
 
 <b style="color:green">Task:</b> Click `edit`and then `check` to read in the data set. 
 
-```{r "2 a)"}
-#< task_notest
+```{r "3_7"}
 data <- readRDS("data_crop.rds")
-#>
 ```
 
 Next, we want to construct a data set named `data_mean` that contains the average yields for the crops `cotton`, `soybean`, `maize` and `rapeseed` per year. For this purpose, the `dplyr` package is suitable. We already learned about this package in the preceding chapter. 
 
-#< quiz "Using dplyr"
-question: Which order of dplyr operations do we need to achieve the desired data set?
-sc: 
-- filter() %>% group_by() %>% summarize()*
-- select() %>% filter() %>% summarize()
-- select() %>% mutate() %>% group_by()
-- filter() %>% group_by() %>% arrange()
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: Which order of dplyr operations do we need to achieve the desired data set?
+
+- filter() %>% group_by() %>% summarize() [x]
+
+- select() %>% filter() %>% summarize() [ ]
+
+- select() %>% mutate() %>% group_by() [ ]
+
+- filter() %>% group_by() %>% arrange() [ ]
+
 
 <br/>
 
@@ -283,8 +298,7 @@ We use `filter()` to select the rows that contain the needed crops. After that t
 
 <b style="color:green">Task:</b> Just `check` the following code.
 
-```{r "2 b)"}
-#< task_notest
+```{r "3_8"}
 #load required package
 library(dplyr)
 #generate data set
@@ -293,13 +307,15 @@ data_mean <- data %>%
   group_by(crop, year) %>% 
   summarize(yield = mean(yield)) %>% 
   mutate(crop = factor(crop, levels = c("maize", "rapeseed", "soybean", "cotton")))
-#>
 ```
 
 Now we have a data set that contains the average yields per crop over time. Note that we computed the average yield without distinguishing between GM and Non-GM harvests. 
 We can use this data set to visualize the yields over time for the different crops. To do so, the package `ggplot2` is useful. It offers a wide range of functions to create nice graphics.
 
-#< info "ggplot2"
+
+***
+
+### Info: ggplot2
 `ggplot2` is a very extensive and powerful package to display graphs in R. It is part of the `tidyverse` package. 
 Plots are usually generated by starting with the command `ggplot()`. After that you are able to create plots by adding layers using `geom()` functions. 
 Let´s illustrate this with an example: 
@@ -312,14 +328,15 @@ example_plot <- ggplot(data = data) +
 * The required data set can be assigned in the `ggplot()` command. However, it is also possible to assign the data in the corresponding `geom()` function if the layers require different data sets. 
 * In addition, `ggplot2` has a wide range of other commands that allow, for example, the addition of titles, axis labels or personalized colors for groups. 
 If you want to read more about this package, click [here](https://ggplot2.tidyverse.org) for further information.
-#>
+
+***
+
 
 Since we want to display a time course, we use `geom_line()`. In order to get one line per crop type, we have to use the argument `color` in the `aes()` of `geom_line()`. Additionally, we add the function `scale_color_manual()` to get nicer colors for our lines and add a title within the `ggtitle()` command. 
 
 <b style="color:green">Task:</b> Just `check` the following code to display the graph.
 
-```{r "2 c)", fig.cap = ""}
-#< task_notest
+```{r "3_9",fig.cap=''}
 #load required package 
 library(ggplot2)
 #display plot
@@ -327,7 +344,6 @@ ggplot(data = data_mean) +
   geom_line(aes(x=year, y=yield, color = crop)) + 
   scale_color_manual(values = c("#3b7dd8", "#84c1ff", "#009688", "#651e3e")) +
   ggtitle("Average yields over time")
-#>
 ```
 
 <br/>
@@ -340,13 +356,11 @@ As previously mentioned, our crop graph does not differentiate between GM and No
 
 <b style="color:green">Task:</b> Just `check` the following code to load the data set and show the `head()` of it. 
 
-```{r "2 d)"}
-#< task_notest
+```{r "3_10"}
 #load data set
 map <- readRDS("data_map.rds")
 #show head
 head(map)
-#>
 ```
 
 <br/>
@@ -357,14 +371,13 @@ To create the map, we again use the package `ggplot2`. In this case the command 
 
 <b style="color:green">Task:</b> Fill in the right data set and choose the variable for the fill of the countries: 
 
-```{r "2 e)", fig.width=10, fig.cap = ""}
-#< fill_in
-#show map
-ggplot(data = ___) + 
-  geom_polygon(aes(x = long, y = lat, group = group, fill = ___), colour="black") +
-  scale_fill_manual(values = c("#008080", "lightgrey")) +
-  ggtitle("GM cultivation worldwide")
-#>
+```{r "3_11",fig.width=10, fig.cap=''}
+# #show map
+# ggplot(data = ___) + 
+#   geom_polygon(aes(x = long, y = lat, group = group, fill = ___), colour="black") +
+#   scale_fill_manual(values = c("#008080", "lightgrey")) +
+#   ggtitle("GM cultivation worldwide")
+
 #show map
 ggplot(data = map) + 
   geom_polygon(aes(x = long, y = lat, group = group, fill = GM_country), colour="black") +
@@ -381,7 +394,10 @@ If you wish to explore background information on general agricultural land use a
 
 **Note:** This information is not relevant for our further analyses.
 
-#< info "Global agricultural land use"
+
+***
+
+### Info: Global agricultural land use
 
 <br/>
 <img src="images/agricultural-land.png" alt="drawing" style="width:800px;"/>
@@ -403,7 +419,9 @@ As you can see, the United States takes the lead in GM cultivation, covering 71.
 
 When we align these findings with the map shown before, it becomes apparent that the United States, Brazil, Argentina, and India are crucial players in both overall agricultural land use and GM cultivation. Canada, with an overall agricultural land of about 60 million hectares, allocates approximately 20% of it to GM cultivation. Notably, despite China's extensive agricultural land exceeding 250 million hectares, only 3.2 million hectares are designated for GM cultivation.
 
-#>
+
+***
+
 
 **Summary** 
 
@@ -422,10 +440,8 @@ Before we start with our analyses, we have to load the data set again.
 
 <b style="color:green">Task:</b> Just `check` the following code. 
 
-```{r "3 a)"}
-#< task_notest
+```{r "4_12"}
 data <- readRDS("data_crop.rds")
-#>
 ```
 
 As we have learned in the previous chapters, the underlying paper focuses on four crucial crops. In our introduction of the DiD approach we limit our analysis to the crop type `cotton`.
@@ -433,14 +449,12 @@ In `data` we still have all crops. Therefore we continue with filtering the data
 
 <b style="color:green">Task:</b> Just `check` the following code to store the resulting data set in `data_cotton`. 
 
-```{r "3 b)"}
-#< task_notest
+```{r "4_13"}
 #load required package
 library(dplyr)
 #manipulate data set 
 data_cotton <- data %>% 
   filter(crop == "cotton")
-#>
 ```
 
 The Difference-in-Difference (DiD) approach is a statistical method to estimate the causal effect of a treatment. 
@@ -462,15 +476,15 @@ The observations are divided into these two groups by the variable `period`.
 
 Before we dive into the topic, we need to compute the average yields per year and group. For that purpose we derive a new data set from `data_cotton`. 
 
-#< quiz "Average cotton yields"
-question: For which variables should we group our data set `data_cotton` to get the desired average yields?
-sc: 
-- year and country.
-- year and GM_country.*
-- year and crop.
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: For which variables should we group our data set `data_cotton` to get the desired average yields?
+
+- year and country. [ ]
+
+- year and GM_country. [x]
+
+- year and crop. [ ]
+
 
 <br/>
 
@@ -478,12 +492,10 @@ You are right. We need to group our data set by `year` and `GM_country`. To acco
 
 <b style="color:green">Task:</b> Just `check` the following code chunk to compute the average cotton yields per year and group. 
 
-```{r "3 c)"}
-#< task_notest
+```{r "4_14"}
 data_mean <- data_cotton %>% 
   group_by(year, GM_country) %>% 
   summarise(yield = mean(yield)) 
-#>
 ```
 
 Now we have a data set `data_mean` containing average yields per treatment and control group over the years. 
@@ -492,19 +504,18 @@ The graph features two lines representing the average yields in GM countries (tr
 
 <b style="color:green">Task:</b> Replace the `___` with the name of the variables that we want to display on the x-axis.
 
-```{r "3 d)", fig.cap = ""}
-#< fill_in
-#load required package
-library(ggplot2)
-#generate plot
-cotton_plot <- ggplot() +
-  geom_line(aes(x= ___, y=yield, color=GM_country), data = data_mean) +
-  geom_vline(xintercept = 1996, linetype = "dotted", color = "red") +
-  scale_color_manual(values=c("#33D4FF", "black")) +
-  ggtitle("Average cotton yields over time")
-#show cotton_plot
-cotton_plot
-#>
+```{r "4_15",fig.cap=''}
+# #load required package
+# library(ggplot2)
+# #generate plot
+# cotton_plot <- ggplot() +
+#   geom_line(aes(x= ___, y=yield, color=GM_country), data = data_mean) +
+#   geom_vline(xintercept = 1996, linetype = "dotted", color = "red") +
+#   scale_color_manual(values=c("#33D4FF", "black")) +
+#   ggtitle("Average cotton yields over time")
+# #show cotton_plot
+# cotton_plot
+
 #load required package
 library(ggplot2)
 #generate plot
@@ -541,12 +552,10 @@ Utilizing `dplyr`, the required values can be easily computed. Initially, we gro
 
 <b style="color:green">Task:</b> `Check` the following code chunk to show the average yields per `period` and `GM_country`.
 
-```{r "3 e)"}
-#< task_notest
+```{r "4_16"}
 data_cotton %>%
   group_by(period, GM_country) %>% 
   summarize(yield = round(mean(yield),2))
-#>
 ```
 
 <br/>
@@ -555,26 +564,24 @@ As you can see, we have four values, corresponding to each combination of `perio
 
 <b style="color:green">Task:</b> `Check` the following code chunk to compute and show the DiD estimator for cotton.
 
-```{r "3 f)"}
-#< task_notest
+```{r "4_17"}
 #calculate the estimate
 DiD_cotton = (1.89 - 1.44) - (1.35 - 1.36)
 #show the Estimate
 DiD_cotton
-#>
 ```
 
 The DiD estimate is $0.46$. In general, the interpretation of the DiD estimator is as follows: The DiD estimator captures the change in the treatment group compared to the control group after the introduction of the treatment. Reconsider the formula and think about how we could specify this interpretation for our estimate. 
 
-#< quiz "First DiD manually"
-question: Which interpretation of our estimate $0.46$ is correct?
-sc: 
-- The cultivation of cotton in GM regions in the experimental period increases the average yields of cotton by 0.46 tonnes/hectare compared to the pre-experimental period.
-- The cultivation of cotton in GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to Non-GM regions.*
-- The cultivation of cotton in GM and Non-GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to a world where GM cultivation is banned everywhere. 
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: Which interpretation of our estimate $0.46$ is correct?
+
+- The cultivation of cotton in GM regions in the experimental period increases the average yields of cotton by 0.46 tonnes/hectare compared to the pre-experimental period. [ ]
+
+- The cultivation of cotton in GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to Non-GM regions. [x]
+
+- The cultivation of cotton in GM and Non-GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to a world where GM cultivation is banned everywhere. [ ]
+
 
 <br/>
 
@@ -584,11 +591,16 @@ Now that we have gained a initial understanding of the DiD approach , we can pro
 
 If you are unfamiliar with OLS estimation, please refer to the information block below.
 
-#< info "Introduction to OLS"
+
+***
+
+### Info: Introduction to OLS
 The Ordinary Least Squares method is used to estimate parameters in a linear regression. The model depicts a linear relationship between the dependent variable $y$ and at least one independent variable $x$. The basic form of a linear regression model is represented as $y_t = ß_0 + ß_1 x_{1,t}+u_t$ where $y_t$ and $x_{1,t}$ are observable variables. 
 The error term $u_t$ is unobserved. The goal of OLS is to find the values for coefficients of the independent variables that minimize the sum of the squared residuals. This means it tries to minimize differences between the observations and the predictions of the model.
 The predicted values $\hat{y}_{t}$ of $y_t$ given the estimates $\hat{ß_0}$ and $\hat{ß_1}$ can be calculated as $\hat{y_t} = \hat{ß_0} + \hat{ß_1} x_{1,t}$  (Verbeek (2004), p.8 ff.).
-#>
+
+***
+
 
 In the following linear regression formula the OLS (ordinary least squares) estimator $\hat{ß}_{1}$ of ${ß}_{1}$ represents the DiD estimator: 
 
@@ -609,41 +621,45 @@ To show a nice regression output we use the `stargazer()` command from the `star
 
 <b style="color:green">Task:</b> `Check` the following code chunk to show the first regression output. 
 
-```{r "3 g)"}
-#< task_notest
+```{r "4_18"}
 #load required package
 library(stargazer)
 #calculate regression
 reg1 <- lm(yield ~ exp_GM + exp + GM, data = data_cotton)
 #show the regression
 stargazer(reg1, type = "text", omit.stat=c("adj.rsq","ser","f"))
-#>
 ```
 
 If you do not yet have any experience in understanding the output of `stargazer()`, have a look at the corresponding info block.
 
-#< info "Stargazer"
+
+***
+
+### Info: Stargazer
 
 The package stargazer enables us to display well-formatted regression outputs. 
 We see the estimated coefficients for all controlled variables in the regression, along with the estimated constant of the model. The standard error of each estimator is displayed below the respective coefficients in parentheses. A distinctive feature, from which the function derives its name, is the inclusion of significance stars next to the estimators.
 For instance, *** denotes significance at the 1% level, ** at the 5% level, and * at the 10% level, while no star indicates that an estimated coefficient is not significant at any relevant level. This information is also available in the "Note" section. In the upcoming sections of the problem set, additional lines will indicate the inclusion of fixed effects or cluster-robust standard errors. 
 To learn more about individual adjustments, click [here](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf).
 
-#>
+
+***
+
 
 The stargazer output provides four estimates, with the estimators `exp_GM` and the constant in our regression proving highly significant at the 1% level. Conversely, the estimators `exp` and `GM` do not exhibit statistical significance.
 In a regression analysis, the constant term, also known as the intercept, represents the value of the dependent variable when all independent variables are set to zero. Consider the implications of the variables `exp` and `GM` being $0$ as you respond to the upcoming question.
 
-#< quiz "Interpretation ß_0"
-question: What does the constant $ß_0$ with a value of $1.357$ stand for in our estimation?
-sc: 
-- The average yield in the treatment group in the experimental period
-- The average yield in the control group in the pre-experimental period*
-- The average yield in the control group
-- The average yield in the treatment group in the pre-experimental period
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: What does the constant $ß_0$ with a value of $1.357$ stand for in our estimation?
+
+- The average yield in the treatment group in the experimental period [ ]
+
+- The average yield in the control group in the pre-experimental period [x]
+
+- The average yield in the control group [ ]
+
+- The average yield in the treatment group in the pre-experimental period [ ]
+
 
 <br/>
 
@@ -672,8 +688,7 @@ For now, we do not have cluster-robust standard errors in our regression. So the
 
 <b style="color:green">Task:</b> `Check` the following code by to display our initial regression `reg1` alongside the current regression that includes country fixed effects.
 
-```{r "3 h)"}
-#< task_notest
+```{r "4_19"}
 #load required package
 library(lfe)
 #calculate the regression
@@ -681,19 +696,17 @@ reg2 <- felm(yield ~ exp_GM + exp | country, data = data_cotton)
 #show the two regressions side by side
 stargazer(reg1, reg2, type = "text", omit.stat=c("adj.rsq","ser","f"),
           add.lines=list(c("Country Fixed Effects?", "", "Yes")))
-#>
 ```
 
 The initial column displays the standard regression without accounting for fixed effects. In the second column, we incorporated country fixed effects. Notably, we observe very similar estimates to those in the preceding regression. Both observed estimates in the second regression are highly significant.
 
-#< quiz "Interaction term"
-question: Which of our dependent variables is the DiD estimator?
-sc: 
-- exp
-- exp_GM*
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: Which of our dependent variables is the DiD estimator?
+
+- exp [ ]
+
+- exp_GM [x]
+
 
 <br/>
 
@@ -704,15 +717,15 @@ In the second regression, we no longer observe a estimate for `GM` because we le
 
 In our second regression we addressed varying economic and ecological situations of the countries by adding country fixed effects. There are also other patterns and variations within our data set. Think about changes that are similar across countries. 
 
-#< quiz "Adding fixed effects"
-question: For which variable should we add additional fixed effects to control for heterogeneity?
-sc: 
-- period
-- crop
-- year*
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: For which variable should we add additional fixed effects to control for heterogeneity?
+
+- period [ ]
+
+- crop [ ]
+
+- year [x]
+
 
 <br/>
 
@@ -727,27 +740,26 @@ To add year fixed effects to our regression, we remove the variable `exp` and ad
 
 <b style="color:green">Task:</b> `Check` the following chunk to integrate year fixed effects into our regression.
 
-```{r "3 i)"}
-#< task_notest
+```{r "4_20"}
 #calculate and show the regression
 reg3 <- felm(yield ~ exp_GM | country + year, data = data_cotton)
 #we can show all regressions side by side
 stargazer(reg1, reg2, reg3, type = "text", omit.stat=c("adj.rsq","ser","f"),
           add.lines=list(c("Country Fixed Effects?", "", "Yes", "Yes"), c("Year Fixed Effects?", "", "", "Yes")))
-#>
 ```
 
 With the inclusion of year fixed effects, we can now examine the stargazer output, which presents all three regressions. 
-#< quiz "Comparing Regression Results"
-question: Look at the regression output. What does change in the third column compared to the second?
-sc: 
-- The DiD estimator. 
-- The significance level of the DiD estimator. 
-- The standard error of the DiD estimator.
-- Nothing.*
-success: Well done. 
-failure: Try again.
-#>
+
+Quiz: Look at the regression output. What does change in the third column compared to the second?
+
+- The DiD estimator. [ ]
+
+- The significance level of the DiD estimator. [ ]
+
+- The standard error of the DiD estimator. [ ]
+
+- Nothing. [x]
+
 
 <br/>
 
@@ -778,8 +790,7 @@ Following that, we introduce our cluster-robust standard errors by including the
 
 <b style="color:green">Task:</b> `Check` the following code to use cluster-robust standard errors in our fourth regression.
 
-```{r "3 i)"}
-#< task_notest
+```{r "4_21"}
 #calculate and show the regression
 reg4 <- felm(yield ~ exp_GM | country + year | 0 | country, data = data_cotton)
 #we can show all regressions side by side
@@ -788,7 +799,6 @@ stargazer(reg1, reg2, reg3, reg4, type = "text",
           add.lines=list(c("Country Fixed Effects?", "", "Yes", "Yes", "Yes"), c("Year Fixed Effects?", "", "", "Yes", "Yes"), 
                          c("Cluster Robust Standard errors?", "", "", "", "Yes"))
           )
-#>
 ```
 
 The resulting DiD estimator remains at $0.456$ and is still highly significant. 
@@ -815,10 +825,8 @@ Before we look at all four crucial crops in the next chapter, we keep it simple 
 
 <b style="color:green">Task:</b> `Edit` and `check` the following code to read in our data set again.
 
-```{r "4 a)"}
-#< task_notest
+```{r "5_22"}
 data <- readRDS("data_crop.rds")
-#>
 ```
 
 Analogously to the initial DiD approach in Chapter 3, we categorize two groups based on the variable `GM_country`:
@@ -841,15 +849,13 @@ If there is no GM rice cultivation in our data set, `GMdefacto` must always be $
 
 <b style="color:green">Task:</b> Just `check` the following code.
 
-```{r "4 b)"}
-#< task_notest
+```{r "5_23"}
 #load required package
 library(dplyr)
 #show GMdefacto for rice
 data %>% 
   filter(crop == "rice") %>% 
   distinct(GMdefacto)
-#>
 ```
 
 <br/>
@@ -860,23 +866,20 @@ We recommence with the manual calculation of the DiD estimator. To do so, we rep
 
 <b style="color:green">Task:</b> Just `check` the following code chunk to generate `data_cotton`.
 
-```{r "4 c)"}
-#< task_notest
+```{r "5_24"}
 #recreate data_cotton
 data_cotton <- data %>% 
   filter(crop == "cotton")
-#>
 ```
 
 Analogously we compose a data set for rice that we store in the variable `data_rice`.
 
 <b style="color:green">Task:</b> Fill in the `___` with the right `dplyr`-command to create the data set. 
 
-```{r "4 d)"}
-#< fill_in
-data_rice <- data %>% 
-  ___
-#>
+```{r "5_25"}
+# data_rice <- data %>% 
+#   ___
+
 data_rice <- data %>% 
   filter(crop == "rice")
 ```
@@ -885,12 +888,11 @@ Like in the last chapter, we now want to illustrate the average yields per treat
 
 <b style="color:green">Task:</b> Fill in the `___` with the right variables to create `data_mean_cotton`.
 
-```{r "4 e)"}
-#< fill_in
-data_mean_cotton <- data_cotton %>% 
-  group_by(___, ___) %>% 
-  summarise(yield = mean(yield))
-#>
+```{r "5_26"}
+# data_mean_cotton <- data_cotton %>% 
+#   group_by(___, ___) %>% 
+#   summarise(yield = mean(yield))
+
 data_mean_cotton <- data_cotton %>% 
   group_by(year, GM_country) %>% 
   summarise(yield = mean(yield))
@@ -900,24 +902,21 @@ Analogously to cotton, we create the same data set for rice.
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "4 f)"}
-#< task_notest
+```{r "5_27"}
 data_mean_rice <- data_rice %>% 
   group_by(year, GM_country) %>% 
   summarise(yield = mean(yield))
-#>
 ```
 
 We now have two data sets for cotton and rice containing the average yields per group and year. Before we move on to the plot, let us do a little quiz.  
 
-#< quiz "Treatment values for rice"
-question: Do we observe values in the treatment group for rice?
-sc: 
-- Yes.*
-- No.
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: Do we observe values in the treatment group for rice?
+
+- Yes. [x]
+
+- No. [ ]
+
 
 <br/>
 
@@ -927,8 +926,7 @@ To see the effect of `GM_country` on rice compared to cotton we use two `geom_li
 
 <b style="color:green">Task:</b> Just `check` the following code to display the graph.
 
-```{r "4 g)", fig.cap = ""}
-#< task_notest
+```{r "5_28",fig.cap=''}
 #load required package
 library(ggplot2)
 #display plot
@@ -940,7 +938,6 @@ scale_color_manual(values=c("blue", "black")) +
 #geom_line() for rice 
 geom_line(aes(x = year, y = yield, color = GM_country), linetype = 2, data = data_mean_rice) +
 ggtitle("Average yields for cotton and rice over time")
-#>
 ```
 
 The graph shows the progression of yields in the treatment group in blue, with the dashed lines representing the progression for rice. 
@@ -951,12 +948,11 @@ Before we turn to the calculation of the Triple DiD estimator we calculate the D
 
 <b style="color:green">Task:</b> Choose the right data set to calculate the required values for our DiD estimator.
 
-```{r "4 h)"}
-#< fill_in
-___ %>%
-  group_by(period, GM_country) %>% 
-  summarise(yield = round(mean(yield),2))
-#>
+```{r "5_29"}
+# ___ %>%
+#   group_by(period, GM_country) %>% 
+#   summarise(yield = round(mean(yield),2))
+
 data_rice %>%
   group_by(period, GM_country) %>% 
   summarise(yield = round(mean(yield), 2))
@@ -966,7 +962,10 @@ data_rice %>%
 
 If you do not remember the formula from the last chapter, take a look at the info box: 
 
-#< info "manual DiD estimation"
+
+***
+
+### Info: manual DiD estimation
 The formula for the DiD estimator is as follows:
 $${DiD} = (\overline{y}_{exp,gm} - \overline{y}_{exp,nongm}) - (\overline{y}_{pre,gm} - \overline{y}_{pre,nongm})$$
 
@@ -976,19 +975,19 @@ where $\overline{y}$ stands for the average yield in the corresponding group:
 * $\overline{y}_{exp,nongm}$: control group during the experimental period
 * $\overline{y}_{pre,gm}$: treatment group during the pre-experimental period
 * $\overline{y}_{pre,nongm}$: control group during the pre-experimental period
-#>
+
+***
+
 
 The procedure for the calculation of the DiD estimate is analogous to the calculation in the last chapter. 
 
 <b style="color:green">Task:</b> Just `check` the following code chunk.
 
-```{r "4 i)"}
-#< task_notest
+```{r "5_30"}
 #calculate DiD_rice
 DiD_rice = (4.39 - 3.54) - (3.60 - 2.98)
 #show DiD_rice
 DiD_rice
-#>
 ```
 
 As it was already recognizable in our graph, the yields in GM countries are higher. We get a positive DiD estimate for rice of $0.23$. However, the positive effect of the GM region is smaller than for cotton, where we observed an estimator of $0.46$.
@@ -997,10 +996,8 @@ To continue with our analysis, we again need the DiD estimator for cotton from t
 
 <b style="color:green">Task:</b> `Check` the following code to reproduce the Did estimator from the preceding chapter.
 
-```{r "4 j)"}
-#< task_notest
+```{r "5_31"}
 DiD_cotton = (1.89 - 1.44) - (1.35 - 1.36)
-#>
 ```
 
 In these crop-specific calculations of `DiD_cotton` and `DiD_rice`, the differences between the treatment and control groups as well as the differences between the pre-experimental phase before 1996 and the experimental phase are taken into account. 
@@ -1018,11 +1015,9 @@ Since we already calculated the two required estimates, we can calculate the DiD
 
 <b style="color:green">Task:</b> `Check` the following code to calculate and display the DiD estimate.
 
-```{r "4 k)"}
-#< task_notest
+```{r "5_32"}
 DiD = DiD_cotton - DiD_rice
 DiD
-#>
 ```
 
 The value of our Triple DiD estimation is $0.23$. Consequently, based on this outcome, we would anticipate an increase in yields of $0.23$ tonnes/hectare in GM regions compared to Non-GM regions. 
@@ -1031,11 +1026,10 @@ Analogous to the straightforward DiD approach we can calculate this estimate by 
 
 <b style="color:green">Task:</b> Fill in the placeholder with the right `dplyr` command.
 
-```{r "4 l)"}
-#< fill_in
-data_reg <- data %>% 
-  ___(crop %in% c("cotton", "rice")) 
-#>
+```{r "5_33"}
+# data_reg <- data %>% 
+#   ___(crop %in% c("cotton", "rice")) 
+
 data_reg <- data %>% 
   filter(crop %in% c("cotton", "rice")) 
 ```
@@ -1057,16 +1051,17 @@ where
 
 The needed interaction terms are stored in the variables `exp_GM_crop`, `exp_GM`, `GM_crop` and `exp_crop`.
 
-#< quiz "Triple DiD interaction"
-question: The coefficient of which interaction term is the Triple DiD estimator?
-sc: 
-- exp_GM_crop*
-- exp_GM
-- GM_crop
-- exp_crop
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: The coefficient of which interaction term is the Triple DiD estimator?
+
+- exp_GM_crop [x]
+
+- exp_GM [ ]
+
+- GM_crop [ ]
+
+- exp_crop [ ]
+
 
 <br/>
 
@@ -1076,8 +1071,7 @@ Since we already introduced country cluster-robust standard errors in the last c
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "4 m)"}
-#< task_notest
+```{r "5_34"}
 #load required packages
 library(lfe)
 library(stargazer)
@@ -1086,7 +1080,6 @@ reg_1 <- felm(yield ~ exp_GM_crop + exp_GM + GM_crop + exp_crop + exp + GM + cro
 #show regression output
 stargazer(reg_1, type = "text", omit.stat=c("adj.rsq","ser","f"),
           add.lines=list(c("Country cluster-robust standard errors?", "Yes")))
-#>
 ```
 
 In the table you can see the `Constant` and seven further coefficients. 
@@ -1097,27 +1090,33 @@ Our primary focus lies on the coefficient of `exp_GM_crop`, representing the DiD
 
 Analogously to the initial DiD approach in the last chapter, we extend our model by adding fixed effects. You can refresh your knowledge by reading the info block on this topic.
 
-#< info "fixed effects"
+
+***
+
+### Info: fixed effects
 **Fixed effects** help to address issues related to unobserved differences between individuals or entities like countries. They become crucial when we consider factors like individual skills or - as in the underlying study - varying economic and ecological situations (Best and Wolf (2015), p. 327 f.). 
 To incorporate fixed effects for `year` in our regression, we would need to create a dummy variable for each year in our data set that is $1$ for each observation in the associated country and $0$ otherwise. Since the observation period in our data set stretches from 1986 to 2019, creating dummy variables would be costly. In R we can avoid this problem by using the function `felm()` from the package `lfe`. It automatically creates dummy variables for every level of a variable. The basic structure of this function is as follows: 
 **felm(response ~ dependent variables + control variables | fixed effects | 0 | cluster-robust standard error, data = data)**
-#>
+
+***
+
 
 <br/>
 
 Global crop yields are influenced by a range of external factors, including the overall economic situation and climatic conditions. These enduring influences, which exhibit relative stability over time, play a crucial role in shaping agricultural outcomes. 
 To account for the impact of these persistent factors in our estimation, we incorporate fixed effects into our analysis. Fixed effects serve as a method to control for these unchanging factors and enhance the accuracy of our estimation.
 
-#< quiz "Country fixed effects"
-question: For which variable must fixed effects be added to control for such permanent influences?
-sc: 
-- crop
-- country*
-- GM
-- exp
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: For which variable must fixed effects be added to control for such permanent influences?
+
+- crop [ ]
+
+- country [x]
+
+- GM [ ]
+
+- exp [ ]
+
 
 <br/>
 
@@ -1130,14 +1129,13 @@ where $\lambda_{t}$ denote the year fixed effects and $\delta_{i}$ denote the co
 
 <b style="color:green">Task:</b> Replace the `___` with the introduced fixed effects.
 
-```{r "4 n)"}
-#< fill_in
-#calculate regression
-reg_2 <- felm(yield ~ exp_GM_crop + exp_GM + GM_crop + exp_crop + crop_cotton | ___ + ___ | 0 | country, data = data_reg)
-#show regression output
-stargazer(reg_1, reg_2, type = "text", omit.stat=c("adj.rsq","ser","f"),
-          add.lines=list(c("Country cluster-robust standard errors?", "Yes", "Yes"), c("Country Fixed Effects?", "", "Yes"), c("Year Fixed Effects?", "", "Yes")))
-#>
+```{r "5_35"}
+# #calculate regression
+# reg_2 <- felm(yield ~ exp_GM_crop + exp_GM + GM_crop + exp_crop + crop_cotton | ___ + ___ | 0 | country, data = data_reg)
+# #show regression output
+# stargazer(reg_1, reg_2, type = "text", omit.stat=c("adj.rsq","ser","f"),
+#           add.lines=list(c("Country cluster-robust standard errors?", "Yes", "Yes"), c("Country Fixed Effects?", "", "Yes"), c("Year Fixed Effects?", "", "Yes")))
+
 #calculate regression
 reg_2 <- felm(yield ~ exp_GM_crop + exp_GM + GM_crop + exp_crop + crop_cotton | country + year | 0 | country, data = data_reg)
 #show regression output
@@ -1165,14 +1163,12 @@ where $\lambda_{t}$ denote the year fixed effects, $\delta_{i}$ denote the count
 
 <b style="color:green">Task:</b> `Check` the following code chunk to implement crop fixed effects.
 
-```{r "4 o)"}
-#< task_notest
+```{r "5_36"}
 #calculate regression
 reg_3 <- felm(yield ~ exp_GM_crop + exp_GM + GM_crop + exp_crop | country + year + crop | 0 | country, data = data_reg)
 #show regression output
 stargazer(reg_1, reg_2, reg_3, type = "text", omit.stat=c("adj.rsq","ser","f"),
           add.lines=list(c("Country cluster-robust standard errors?", "Yes", "Yes", "Yes"), c("Country Fixed Effects?", "", "Yes", "Yes"), c("Year Fixed Effects?", "", "Yes", "Yes"), c("Crop Fixed Effects?", "", "", "Yes")))
-#>
 ```
 
 As we concluded our initial Triple DiD approach, we can now take a closer look at the results. In our Triple DiD regression we determine a treatment effect of $0.226$ tonnes/hectare. This result aligns with the outcome derived earlier in this chapter when we manually calculated the treatment effect. In essence, this finding means that harvesting cotton in a treated country results in an average yield increase of $0.226$ tonnes/hectare. 
@@ -1190,15 +1186,13 @@ where $\delta_{i,t}$ denote the country-by-year fixed effects and $\lambda_{c,t}
 
 <b style="color:green">Task:</b> `Check` the following code to incorporate country-by-year, crop-by-year and country-by-crop fixed effects in the regression. 
 
-```{r "4 p)"}
-#< task_notest
+```{r "5_37"}
 #calculate regression
 reg_4 <- felm(yield ~ exp_GM_crop | country_yr + crop_yr + country_crop | 0 | country, data = data_reg)
 #show regression output
 stargazer(reg_1, reg_2, reg_3, reg_4, type = "text",
           omit.stat=c("adj.rsq","ser","f"),
           add.lines=list(c("Country cluster-robust standard errors?", "Yes", "Yes", "Yes", "Yes"), c("Country Fixed Effects?", "", "Yes", "Yes", ""), c("Year Fixed Effects?", "", "Yes", "Yes", ""), c("Crop Fixed Effects?", "", "", "Yes", ""), c("Country-by-year Fixed Effects?", "", "", "", "Yes"), c("Crop-by-year Fixed Effects?", "", "", "", "Yes"), c("Country-by-crop Fixed Effects?", "", "", "", "Yes")))
-#>
 ```
 
 With the incorporation of refined fixed effects, our DiD estimate, denoted as `exp_GM_crop`, rises from $0.226$ to $0.367$. This means that our estimation implicates that the average cotton yields in the experimental period are $0.367$ tonnes/hectare higher in GM regions compared to cotton yields in Non-GM regions. 
@@ -1213,14 +1207,13 @@ As we learned in the previous chapter, cluster-robust standard errors allow erro
 
 Compare `country` and `country-crop` cluster-robust standard errors when you answer the following question. 
 
-#< quiz "Country-crop cluster-robust standard errors"
-question: Which cluster-robust standard errors require a more stringent assumption regarding error terms?
-sc: 
-- Country cluster-robust standard errors
-- Country-crop cluster-robust standard errors*
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: Which cluster-robust standard errors require a more stringent assumption regarding error terms?
+
+- Country cluster-robust standard errors [ ]
+
+- Country-crop cluster-robust standard errors [x]
+
 
 <br/>
 
@@ -1229,15 +1222,13 @@ Nevertheless, we will include cluster-robust standard errors at the country-crop
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "4 q)"}
-#< task_notest
+```{r "5_38"}
 #calculate regression
 reg_5 <- felm(yield ~ exp_GM_crop | country_yr + crop_yr + country_crop | 0 | country_crop, data = data_reg)
 #show regression output
 stargazer(reg_1, reg_2, reg_3, reg_4, reg_5, type = "text",
           omit.stat=c("adj.rsq","ser","f"),
           add.lines=list(c("Country cluster-robust standard errors?", "Yes", "Yes", "Yes", "Yes", ""), c("Country Fixed Effects?", "", "Yes", "Yes", "", ""), c("Year Fixed Effects?", "", "Yes", "Yes", "", ""), c("Crop Fixed Effects?", "", "", "Yes", "", ""), c("Country-by-year Fixed Effects?", "", "", "", "Yes", "Yes"), c("Crop-by-year Fixed Effects?", "", "", "", "Yes", "Yes"), c("Country-by-crop Fixed Effects?", "", "", "", "Yes", "Yes"), c("Country-crop cluster-robust standard errors?", "", "", "", "", "Yes")))
-#>
 ```
 
 In the final regression of this chapter we incorporated country-by-year, crop-by-year and country-by-crop fixed effects. Additionally, we clustered the standard errors on the country-crop level. Like in the previous regression we observe a DiD estimate of $0.367$. The standard error decreases from $0.268$ to $0.189$. This value is comparatively low. Additionally, we now observe a significance of our Triple DiD estimate at the 10%-level. 
@@ -1266,18 +1257,15 @@ This extension addresses a significant limitation in our previous analyses. Prio
 
 <b style="color:green">Task:</b> Just `check` the following code to load the data set once again. 
 
-```{r, "5 a)"}
-#< task_notest
+```{r "6_39"}
 data <- readRDS("data_crop.rds")
-#>
 ```
 
 Let us start our analysis by examining the crop specific variables of `GMtrend`. To demonstrate how this variables are computed, we display the variables `GMtrendc_cotton`, `GMdefacto`, `GMwithdrawn` along with their corresponding years. Since the value of `GMdefacto` depends on the specific country, we only present observations in the country Brazil. Additionally, we filter the observations to include only cases where `GMtrendc_cotton` is not equal to $0$. 
 
 <b style="color:green">Task:</b> `Check` the code chunk to display the desired output. 
 
-```{r "5 b)"}
-#< task_notest
+```{r "6_40"}
 #load required package
 library(dplyr)
 #display desired output
@@ -1285,7 +1273,6 @@ GM_data <- data %>%
   filter(GMtrendc_cotton != 0 & country == "Brazil") %>% 
   select(GMtrendc_cotton, GMdefacto, GMwithdrawn, year, country)
 head(GM_data)
-#>
 ```
 
 The variable `GMtrendc_cotton` quantifies the number of successive GM harvests of cotton up until, and including, the current year. 
@@ -1300,14 +1287,12 @@ Let us illustrate the computation of `relative_yr`. To do this, we generate a su
 
 <b style="color:green">Task:</b> `Check` the following code to show the `head()` of our created data frame. 
 
-```{r "5 c)"}
-#< task_notest
+```{r "6_41"}
 yr_data <- data %>% 
   filter(country == "Brazil" & crop == "cotton") %>% 
   select(GMdefacto, GMwithdrawn, year, relative_yr) %>% 
   arrange(year)
 head(yr_data)
-#>
 ```
 
 The head of `yr_data` provides insight into the first six years, from 1986 to 1991, for Brazil and cotton in our data set. Given that the authorization of this genetically modified (GM) variety in Brazil occurred in 2007, all `relative_yr` values are negative.
@@ -1316,21 +1301,18 @@ As illustrated, the variable `relative_yr` is calculated by subtracting `GMdefac
 
 <b style="color:green">Task:</b> Just `check` the following code to filter for `relative_yr`.
 
-```{r "5 d)"}
-#< task_notest
+```{r "6_42"}
 final_data <- data %>%
   filter(relative_yr <= 10 | is.na(relative_yr))
-#>
 ```
 
-#< quiz "relative_yr"
-question: Does this code generate the right event window?
-sc: 
-- Yes.
-- No.*
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: Does this code generate the right event window?
+
+- Yes. [ ]
+
+- No. [x]
+
 
 <br/>
 
@@ -1347,11 +1329,10 @@ Let us generate a second data set that generates the event window correctly.
 
 <b style="color:green">Task:</b> Fill in the placeholder with the correct event window. 
 
-```{r "5 e)"}
-#< fill_in
-  correct_data <- data %>% 
-  filter((relative_yr <= 10 & relative_yr >= ___) | is.na(relative_yr))
-#>
+```{r "6_43"}
+#   correct_data <- data %>% 
+#   filter((relative_yr <= 10 & relative_yr >= ___) | is.na(relative_yr))
+
 correct_data <- data %>% 
   filter((relative_yr <= 10 & relative_yr >= -10) | is.na(relative_yr))
 ```
@@ -1375,38 +1356,33 @@ Let us begin with the regression of the underlying paper by using the data set `
  
 <b style="color:green">Task:</b> Just `check` the following chunk to store the regression in `reg1`.
 
-```{r  "5 f)"}
-#< task_notest
+```{r "6_44"}
 #load required packages
 library(lfe)
 #estimate regression
 reg1 <- felm(lnyield ~ GMtrendc_cotton + GMtrendc_soybean + GMtrendc_maize + GMtrendc_rapeseed | country_yr + crop_yr + country_crop | 0 | country_crop, data = final_data)
-#>
 ```
 
 Analogously we compute the regression with the correct event window by using the data set `correct_data`. 
 
 <b style="color:green">Task:</b> Just `check` the following chunk to store the regression in `reg2`.
  
-```{r "5 g)"}
-#< task_notest
+```{r "6_45"}
 #estimate regression
 reg2 <- felm(lnyield ~ GMtrendc_cotton + GMtrendc_soybean + GMtrendc_maize + GMtrendc_rapeseed | country_yr + crop_yr + country_crop | 0 | country_crop, data = correct_data)
-#>
 ```
 
 Now that we have computed both regressions, we can compare the outputs. 
 
 <b style="color:green">Task:</b> Fill in the placeholder `___` to show both regressions side by side.
 
-```{r "5 h)"}
-#< fill_in 
-#load required packages
-library(stargazer)
-#show regression output
-stargazer(___, ___, type = "text", omit.stat=c("adj.rsq","ser","f"),
-             column.labels = c("Authors", "Own"))
-#>
+```{r "6_46"}
+# #load required packages
+# library(stargazer)
+# #show regression output
+# stargazer(___, ___, type = "text", omit.stat=c("adj.rsq","ser","f"),
+#              column.labels = c("Authors", "Own"))
+
 #load required packages
 library(stargazer)
 #show regression output
@@ -1417,10 +1393,15 @@ stargazer(reg1, reg2, type = "text", omit.stat=c("adj.rsq","ser","f"),
 The table shows the two regressions side by side. The left side displays the regression from the original paper, while the right side shows our regression incorporating the adjusted event window. The standard errors are clustered on the country-crop level. 
 Note that we regressed on `lnyield` instead of `yield`. Consequently, the interpretation of our estimate differs from the preceding chapters. To gain insights into interpreting logged dependent variables, refer to the information block provided below.
 
-#< info "Logging the dependent variable" 
+
+***
+
+### Info: Logging the dependent variable
 When the dependent variable is logged in a simple regression like $\hat{ln(y)} = \hat{ß_0} + \hat{ß_1} * x$, the general interpretation is as follows: 
 "If x increases by one unit, our prediction of y increases by approximately 100 * $\hat{ß_1}$ percent.
-#>
+
+***
+
 
 The regressions allow us to explore the effects for each crop variety individually. Given our focus on cotton in the preceding chapters, we begin our examination by looking at the estimator for cotton in the third row. 
 
@@ -1441,28 +1422,27 @@ Before we recapitulate our analyses, we want to assess the robustness of the aut
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "5 i)"}
-#< task_notest
+```{r "6_47"}
 #compute the regression with country cluster-robust standard errors
 reg_country <- felm(lnyield ~ GMtrendc_cotton + GMtrendc_soybean + GMtrendc_maize + GMtrendc_rapeseed | country_yr + crop_yr + country_crop | 0 | country, data = final_data)
 #show the authors´ regression alongside with the new one
 stargazer(reg1, reg_country, type = "text", omit.stat=c("adj.rsq","ser","f"),
           column.labels = c("Authors", "Own"))
-#>
 ```
 
 Have a closer look at the two regression output and answer the following quiz:
 
-#< quiz "Robustness Check"
-question: What does change in the second column compared to the first regression?
-sc: 
-- Standard errors
-- Significance
-- Estimates
-- Nothing*
-success: Well done.
-failure: Try again. 
-#>
+
+Quiz: What does change in the second column compared to the first regression?
+
+- Standard errors [ ]
+
+- Significance [ ]
+
+- Estimates [ ]
+
+- Nothing [x]
+
 
 You are right. Our regression does not change when we cluster on country level. 
 
