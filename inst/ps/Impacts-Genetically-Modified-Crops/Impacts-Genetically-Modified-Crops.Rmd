@@ -91,10 +91,10 @@ Before we use this package to succeed with our analysis, let´s engage in a shor
 
 Quiz: What do you think which command fits best to show certain columns?
 
-(1) filter()
-(2) mutate()
-(3) select()
-(4) arrange()
+[1]: filter()
+[2]: mutate()
+[3]: select()
+[4]: arrange()
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -175,10 +175,10 @@ Next, we want to construct a data set named `data_mean` that contains the averag
 
 Quiz: Which order of dplyr operations do we need to achieve the desired data set?
 
-(1) filter() %>% group_by() %>% summarize()
-(2) select() %>% filter() %>% summarize()
-(3) select() %>% mutate() %>% group_by()
-(4) filter() %>% group_by() %>% arrange()
+[1]: filter() %>% group_by() %>% summarize()
+[2]: select() %>% filter() %>% summarize()
+[3]: select() %>% mutate() %>% group_by()
+[4]: filter() %>% group_by() %>% arrange()
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -327,9 +327,9 @@ Before we dive into the topic, we need to compute the average yields per year an
 
 Quiz: For which variables should we group our data set `data_cotton` to get the desired average yields?
 
-(1) year and country.
-(2) year and GM_country.
-(3) year and crop.
+[1]: year and country.
+[2]: year and GM_country.
+[3]: year and crop.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -412,9 +412,9 @@ The DiD estimate is $0.46$. In general, the interpretation of the DiD estimator 
 
 Quiz: Which interpretation of our estimate $0.46$ is correct?
 
-(1) The cultivation of cotton in GM regions in the experimental period increases the average yields of cotton by 0.46 tonnes/hectare compared to the pre-experimental period.
-(2) The cultivation of cotton in GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to Non-GM regions.
-(3) The cultivation of cotton in GM and Non-GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to a world where GM cultivation is banned everywhere.
+[1]: The cultivation of cotton in GM regions in the experimental period increases the average yields of cotton by 0.46 tonnes/hectare compared to the pre-experimental period.
+[2]: The cultivation of cotton in GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to Non-GM regions.
+[3]: The cultivation of cotton in GM and Non-GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to a world where GM cultivation is banned everywhere.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -475,10 +475,10 @@ In a regression analysis, the constant term, also known as the intercept, repres
 
 Quiz: What does the constant $ß_0$ with a value of $1.357$ stand for in our estimation?
 
-(1) The average yield in the treatment group in the experimental period
-(2) The average yield in the control group in the pre-experimental period
-(3) The average yield in the control group
-(4) The average yield in the treatment group in the pre-experimental period
+[1]: The average yield in the treatment group in the experimental period
+[2]: The average yield in the control group in the pre-experimental period
+[3]: The average yield in the control group
+[4]: The average yield in the treatment group in the pre-experimental period
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -527,8 +527,8 @@ The initial column displays the standard regression without accounting for fixed
 
 Quiz: Which of our dependent variables is the DiD estimator?
 
-(1) exp
-(2) exp_GM
+[1]: exp
+[2]: exp_GM
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -547,9 +547,9 @@ In our second regression we addressed varying economic and ecological situations
 
 Quiz: For which variable should we add additional fixed effects to control for heterogeneity?
 
-(1) period
-(2) crop
-(3) year
+[1]: period
+[2]: crop
+[3]: year
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -581,10 +581,10 @@ With the inclusion of year fixed effects, we can now examine the stargazer outpu
 
 Quiz: Look at the regression output. What does change in the third column compared to the second?
 
-(1) The DiD estimator.
-(2) The significance level of the DiD estimator.
-(3) The standard error of the DiD estimator.
-(4) Nothing.
+[1]: The DiD estimator.
+[2]: The significance level of the DiD estimator.
+[3]: The standard error of the DiD estimator.
+[4]: Nothing.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -736,8 +736,8 @@ We now have two data sets for cotton and rice containing the average yields per 
 
 Quiz: Do we observe values in the treatment group for rice?
 
-(1) Yes.
-(2) No.
+[1]: Yes.
+[2]: No.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -861,10 +861,10 @@ The needed interaction terms are stored in the variables `exp_GM_crop`, `exp_GM`
 
 Quiz: The coefficient of which interaction term is the Triple DiD estimator?
 
-(1) exp_GM_crop
-(2) exp_GM
-(3) GM_crop
-(4) exp_crop
+[1]: exp_GM_crop
+[2]: exp_GM
+[3]: GM_crop
+[4]: exp_crop
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -911,10 +911,10 @@ To account for the impact of these persistent factors in our estimation, we inco
 
 Quiz: For which variable must fixed effects be added to control for such permanent influences?
 
-(1) crop
-(2) country
-(3) GM
-(4) exp
+[1]: crop
+[2]: country
+[3]: GM
+[4]: exp
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -1006,8 +1006,8 @@ Compare `country` and `country-crop` cluster-robust standard errors when you ans
 
 Quiz: Which cluster-robust standard errors require a more stringent assumption regarding error terms?
 
-(1) Country cluster-robust standard errors
-(2) Country-crop cluster-robust standard errors
+[1]: Country cluster-robust standard errors
+[2]: Country-crop cluster-robust standard errors
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -1108,8 +1108,8 @@ final_data <- data %>%
 
 Quiz: Does this code generate the right event window?
 
-(1) Yes.
-(2) No.
+[1]: Yes.
+[2]: No.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -1223,10 +1223,10 @@ Have a closer look at the two regression output and answer the following quiz:
 
 Quiz: What does change in the second column compared to the first regression?
 
-(1) Standard errors
-(2) Significance
-(3) Estimates
-(4) Nothing
+[1]: Standard errors
+[2]: Significance
+[3]: Estimates
+[4]: Nothing
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above

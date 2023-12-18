@@ -212,41 +212,11 @@ If you are interested in the number and names of countries where a GM version of
 
 ### Info: Crucial Crops
 
-```{r "2_6",echo=FALSE}
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-#https://rpubs.com/mbounthavong/R-plotly-bar-charts
-#data <- readRDS("data_crop.rds")
-#Data preparation
-crucial_data <- data %>% 
-  filter(crop %in% c("cotton", "maize", "soybean", "rapeseed")) %>% 
-  filter(GMdefacto != 0) %>% 
-  select(crop, country) %>% 
-  distinct() 
+<br/>
+<img src="material/GM-cultivation-by-crop.png" alt="drawing" style="width:800px;"/>
+<br/>
 
-#https://stackoverflow.com/questions/58035452/pivot-wider-outputs-s3-vctrs-list-of-objects
-#information to the different GM countries per crop 
-countries <- crucial_data %>% group_by(crop) %>%
-    mutate(rn = row_number()) %>% ungroup() %>% pivot_wider(names_from = crop, values_from = country)
-
-distinct_countries <- crucial_data %>% select(country) %>% distinct() %>% pull()
-
-chart <- crucial_data %>% 
-  group_by(crop) %>% 
-  summarise(count_country = n())
-#Plot:
-ggplot(chart, aes(x = crop, y = count_country)) +
-  geom_bar(stat = "identity", fill = "#3b7dd8") +
-  geom_text(aes(label = count_country, x = crop, y = count_country), position = position_dodge(width = 0.8), vjust = -0.6) +
-  xlab("Crops") +
-  ylab("Number of GM-Countries") +
-  ggtitle("Number of Countries where GM cultivation is legal per crop") +
-  theme_bw() +
-  theme(plot.caption = element_text(hjust = 0)) +
-  labs(caption = "Note: \nThis plot was created with the 'ggplot2' package. We will learn about it in the second chapter.")
-
-```
+<br/>
 
 The plot illustrates the number of countries where GM cultivation is legal for each crop. 
 GM cotton stands out as the most whitespread, being cultivated in sixteen countries within our data set. 
@@ -274,7 +244,7 @@ As already mentioned in the last chapter, the four crucial crops are cotton, mai
 
 <b style="color:green">Task:</b> Click `edit`and then `check` to read in the data set. 
 
-```{r "3_7"}
+```{r "3_6"}
 data <- readRDS("data_crop.rds")
 ```
 
@@ -298,7 +268,7 @@ We use `filter()` to select the rows that contain the needed crops. After that t
 
 <b style="color:green">Task:</b> Just `check` the following code.
 
-```{r "3_8"}
+```{r "3_7"}
 #load required package
 library(dplyr)
 #generate data set
@@ -336,7 +306,7 @@ Since we want to display a time course, we use `geom_line()`. In order to get on
 
 <b style="color:green">Task:</b> Just `check` the following code to display the graph.
 
-```{r "3_9",fig.cap=''}
+```{r "3_8",fig.cap=''}
 #load required package 
 library(ggplot2)
 #display plot
@@ -356,7 +326,7 @@ As previously mentioned, our crop graph does not differentiate between GM and No
 
 <b style="color:green">Task:</b> Just `check` the following code to load the data set and show the `head()` of it. 
 
-```{r "3_10"}
+```{r "3_9"}
 #load data set
 map <- readRDS("data_map.rds")
 #show head
@@ -371,7 +341,7 @@ To create the map, we again use the package `ggplot2`. In this case the command 
 
 <b style="color:green">Task:</b> Fill in the right data set and choose the variable for the fill of the countries: 
 
-```{r "3_11",fig.width=10, fig.cap=''}
+```{r "3_10",fig.width=10, fig.cap=''}
 # #show map
 # ggplot(data = ___) + 
 #   geom_polygon(aes(x = long, y = lat, group = group, fill = ___), colour="black") +
@@ -440,7 +410,7 @@ Before we start with our analyses, we have to load the data set again.
 
 <b style="color:green">Task:</b> Just `check` the following code. 
 
-```{r "4_12"}
+```{r "4_11"}
 data <- readRDS("data_crop.rds")
 ```
 
@@ -449,7 +419,7 @@ In `data` we still have all crops. Therefore we continue with filtering the data
 
 <b style="color:green">Task:</b> Just `check` the following code to store the resulting data set in `data_cotton`. 
 
-```{r "4_13"}
+```{r "4_12"}
 #load required package
 library(dplyr)
 #manipulate data set 
@@ -492,7 +462,7 @@ You are right. We need to group our data set by `year` and `GM_country`. To acco
 
 <b style="color:green">Task:</b> Just `check` the following code chunk to compute the average cotton yields per year and group. 
 
-```{r "4_14"}
+```{r "4_13"}
 data_mean <- data_cotton %>% 
   group_by(year, GM_country) %>% 
   summarise(yield = mean(yield)) 
@@ -504,7 +474,7 @@ The graph features two lines representing the average yields in GM countries (tr
 
 <b style="color:green">Task:</b> Replace the `___` with the name of the variables that we want to display on the x-axis.
 
-```{r "4_15",fig.cap=''}
+```{r "4_14",fig.cap=''}
 # #load required package
 # library(ggplot2)
 # #generate plot
@@ -552,7 +522,7 @@ Utilizing `dplyr`, the required values can be easily computed. Initially, we gro
 
 <b style="color:green">Task:</b> `Check` the following code chunk to show the average yields per `period` and `GM_country`.
 
-```{r "4_16"}
+```{r "4_15"}
 data_cotton %>%
   group_by(period, GM_country) %>% 
   summarize(yield = round(mean(yield),2))
@@ -564,7 +534,7 @@ As you can see, we have four values, corresponding to each combination of `perio
 
 <b style="color:green">Task:</b> `Check` the following code chunk to compute and show the DiD estimator for cotton.
 
-```{r "4_17"}
+```{r "4_16"}
 #calculate the estimate
 DiD_cotton = (1.89 - 1.44) - (1.35 - 1.36)
 #show the Estimate
@@ -621,7 +591,7 @@ To show a nice regression output we use the `stargazer()` command from the `star
 
 <b style="color:green">Task:</b> `Check` the following code chunk to show the first regression output. 
 
-```{r "4_18"}
+```{r "4_17"}
 #load required package
 library(stargazer)
 #calculate regression
@@ -688,7 +658,7 @@ For now, we do not have cluster-robust standard errors in our regression. So the
 
 <b style="color:green">Task:</b> `Check` the following code by to display our initial regression `reg1` alongside the current regression that includes country fixed effects.
 
-```{r "4_19"}
+```{r "4_18"}
 #load required package
 library(lfe)
 #calculate the regression
@@ -740,7 +710,7 @@ To add year fixed effects to our regression, we remove the variable `exp` and ad
 
 <b style="color:green">Task:</b> `Check` the following chunk to integrate year fixed effects into our regression.
 
-```{r "4_20"}
+```{r "4_19"}
 #calculate and show the regression
 reg3 <- felm(yield ~ exp_GM | country + year, data = data_cotton)
 #we can show all regressions side by side
@@ -790,7 +760,7 @@ Following that, we introduce our cluster-robust standard errors by including the
 
 <b style="color:green">Task:</b> `Check` the following code to use cluster-robust standard errors in our fourth regression.
 
-```{r "4_21"}
+```{r "4_20"}
 #calculate and show the regression
 reg4 <- felm(yield ~ exp_GM | country + year | 0 | country, data = data_cotton)
 #we can show all regressions side by side
@@ -825,7 +795,7 @@ Before we look at all four crucial crops in the next chapter, we keep it simple 
 
 <b style="color:green">Task:</b> `Edit` and `check` the following code to read in our data set again.
 
-```{r "5_22"}
+```{r "5_21"}
 data <- readRDS("data_crop.rds")
 ```
 
@@ -849,7 +819,7 @@ If there is no GM rice cultivation in our data set, `GMdefacto` must always be $
 
 <b style="color:green">Task:</b> Just `check` the following code.
 
-```{r "5_23"}
+```{r "5_22"}
 #load required package
 library(dplyr)
 #show GMdefacto for rice
@@ -866,7 +836,7 @@ We recommence with the manual calculation of the DiD estimator. To do so, we rep
 
 <b style="color:green">Task:</b> Just `check` the following code chunk to generate `data_cotton`.
 
-```{r "5_24"}
+```{r "5_23"}
 #recreate data_cotton
 data_cotton <- data %>% 
   filter(crop == "cotton")
@@ -876,7 +846,7 @@ Analogously we compose a data set for rice that we store in the variable `data_r
 
 <b style="color:green">Task:</b> Fill in the `___` with the right `dplyr`-command to create the data set. 
 
-```{r "5_25"}
+```{r "5_24"}
 # data_rice <- data %>% 
 #   ___
 
@@ -888,7 +858,7 @@ Like in the last chapter, we now want to illustrate the average yields per treat
 
 <b style="color:green">Task:</b> Fill in the `___` with the right variables to create `data_mean_cotton`.
 
-```{r "5_26"}
+```{r "5_25"}
 # data_mean_cotton <- data_cotton %>% 
 #   group_by(___, ___) %>% 
 #   summarise(yield = mean(yield))
@@ -902,7 +872,7 @@ Analogously to cotton, we create the same data set for rice.
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "5_27"}
+```{r "5_26"}
 data_mean_rice <- data_rice %>% 
   group_by(year, GM_country) %>% 
   summarise(yield = mean(yield))
@@ -926,7 +896,7 @@ To see the effect of `GM_country` on rice compared to cotton we use two `geom_li
 
 <b style="color:green">Task:</b> Just `check` the following code to display the graph.
 
-```{r "5_28",fig.cap=''}
+```{r "5_27",fig.cap=''}
 #load required package
 library(ggplot2)
 #display plot
@@ -948,7 +918,7 @@ Before we turn to the calculation of the Triple DiD estimator we calculate the D
 
 <b style="color:green">Task:</b> Choose the right data set to calculate the required values for our DiD estimator.
 
-```{r "5_29"}
+```{r "5_28"}
 # ___ %>%
 #   group_by(period, GM_country) %>% 
 #   summarise(yield = round(mean(yield),2))
@@ -983,7 +953,7 @@ The procedure for the calculation of the DiD estimate is analogous to the calcul
 
 <b style="color:green">Task:</b> Just `check` the following code chunk.
 
-```{r "5_30"}
+```{r "5_29"}
 #calculate DiD_rice
 DiD_rice = (4.39 - 3.54) - (3.60 - 2.98)
 #show DiD_rice
@@ -996,7 +966,7 @@ To continue with our analysis, we again need the DiD estimator for cotton from t
 
 <b style="color:green">Task:</b> `Check` the following code to reproduce the Did estimator from the preceding chapter.
 
-```{r "5_31"}
+```{r "5_30"}
 DiD_cotton = (1.89 - 1.44) - (1.35 - 1.36)
 ```
 
@@ -1015,7 +985,7 @@ Since we already calculated the two required estimates, we can calculate the DiD
 
 <b style="color:green">Task:</b> `Check` the following code to calculate and display the DiD estimate.
 
-```{r "5_32"}
+```{r "5_31"}
 DiD = DiD_cotton - DiD_rice
 DiD
 ```
@@ -1026,7 +996,7 @@ Analogous to the straightforward DiD approach we can calculate this estimate by 
 
 <b style="color:green">Task:</b> Fill in the placeholder with the right `dplyr` command.
 
-```{r "5_33"}
+```{r "5_32"}
 # data_reg <- data %>% 
 #   ___(crop %in% c("cotton", "rice")) 
 
@@ -1071,7 +1041,7 @@ Since we already introduced country cluster-robust standard errors in the last c
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "5_34"}
+```{r "5_33"}
 #load required packages
 library(lfe)
 library(stargazer)
@@ -1129,7 +1099,7 @@ where $\lambda_{t}$ denote the year fixed effects and $\delta_{i}$ denote the co
 
 <b style="color:green">Task:</b> Replace the `___` with the introduced fixed effects.
 
-```{r "5_35"}
+```{r "5_34"}
 # #calculate regression
 # reg_2 <- felm(yield ~ exp_GM_crop + exp_GM + GM_crop + exp_crop + crop_cotton | ___ + ___ | 0 | country, data = data_reg)
 # #show regression output
@@ -1163,7 +1133,7 @@ where $\lambda_{t}$ denote the year fixed effects, $\delta_{i}$ denote the count
 
 <b style="color:green">Task:</b> `Check` the following code chunk to implement crop fixed effects.
 
-```{r "5_36"}
+```{r "5_35"}
 #calculate regression
 reg_3 <- felm(yield ~ exp_GM_crop + exp_GM + GM_crop + exp_crop | country + year + crop | 0 | country, data = data_reg)
 #show regression output
@@ -1186,7 +1156,7 @@ where $\delta_{i,t}$ denote the country-by-year fixed effects and $\lambda_{c,t}
 
 <b style="color:green">Task:</b> `Check` the following code to incorporate country-by-year, crop-by-year and country-by-crop fixed effects in the regression. 
 
-```{r "5_37"}
+```{r "5_36"}
 #calculate regression
 reg_4 <- felm(yield ~ exp_GM_crop | country_yr + crop_yr + country_crop | 0 | country, data = data_reg)
 #show regression output
@@ -1222,7 +1192,7 @@ Nevertheless, we will include cluster-robust standard errors at the country-crop
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "5_38"}
+```{r "5_37"}
 #calculate regression
 reg_5 <- felm(yield ~ exp_GM_crop | country_yr + crop_yr + country_crop | 0 | country_crop, data = data_reg)
 #show regression output
@@ -1257,7 +1227,7 @@ This extension addresses a significant limitation in our previous analyses. Prio
 
 <b style="color:green">Task:</b> Just `check` the following code to load the data set once again. 
 
-```{r "6_39"}
+```{r "6_38"}
 data <- readRDS("data_crop.rds")
 ```
 
@@ -1265,7 +1235,7 @@ Let us start our analysis by examining the crop specific variables of `GMtrend`.
 
 <b style="color:green">Task:</b> `Check` the code chunk to display the desired output. 
 
-```{r "6_40"}
+```{r "6_39"}
 #load required package
 library(dplyr)
 #display desired output
@@ -1287,7 +1257,7 @@ Let us illustrate the computation of `relative_yr`. To do this, we generate a su
 
 <b style="color:green">Task:</b> `Check` the following code to show the `head()` of our created data frame. 
 
-```{r "6_41"}
+```{r "6_40"}
 yr_data <- data %>% 
   filter(country == "Brazil" & crop == "cotton") %>% 
   select(GMdefacto, GMwithdrawn, year, relative_yr) %>% 
@@ -1301,7 +1271,7 @@ As illustrated, the variable `relative_yr` is calculated by subtracting `GMdefac
 
 <b style="color:green">Task:</b> Just `check` the following code to filter for `relative_yr`.
 
-```{r "6_42"}
+```{r "6_41"}
 final_data <- data %>%
   filter(relative_yr <= 10 | is.na(relative_yr))
 ```
@@ -1329,7 +1299,7 @@ Let us generate a second data set that generates the event window correctly.
 
 <b style="color:green">Task:</b> Fill in the placeholder with the correct event window. 
 
-```{r "6_43"}
+```{r "6_42"}
 #   correct_data <- data %>% 
 #   filter((relative_yr <= 10 & relative_yr >= ___) | is.na(relative_yr))
 
@@ -1356,7 +1326,7 @@ Let us begin with the regression of the underlying paper by using the data set `
  
 <b style="color:green">Task:</b> Just `check` the following chunk to store the regression in `reg1`.
 
-```{r "6_44"}
+```{r "6_43"}
 #load required packages
 library(lfe)
 #estimate regression
@@ -1367,7 +1337,7 @@ Analogously we compute the regression with the correct event window by using the
 
 <b style="color:green">Task:</b> Just `check` the following chunk to store the regression in `reg2`.
  
-```{r "6_45"}
+```{r "6_44"}
 #estimate regression
 reg2 <- felm(lnyield ~ GMtrendc_cotton + GMtrendc_soybean + GMtrendc_maize + GMtrendc_rapeseed | country_yr + crop_yr + country_crop | 0 | country_crop, data = correct_data)
 ```
@@ -1376,7 +1346,7 @@ Now that we have computed both regressions, we can compare the outputs.
 
 <b style="color:green">Task:</b> Fill in the placeholder `___` to show both regressions side by side.
 
-```{r "6_46"}
+```{r "6_45"}
 # #load required packages
 # library(stargazer)
 # #show regression output
@@ -1422,7 +1392,7 @@ Before we recapitulate our analyses, we want to assess the robustness of the aut
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
 
-```{r "6_47"}
+```{r "6_46"}
 #compute the regression with country cluster-robust standard errors
 reg_country <- felm(lnyield ~ GMtrendc_cotton + GMtrendc_soybean + GMtrendc_maize + GMtrendc_rapeseed | country_yr + crop_yr + country_crop | 0 | country, data = final_data)
 #show the authors´ regression alongside with the new one

@@ -10,3 +10,5 @@
 ,
 {"type":["check_chunk"],"time":["2023-12-18 09:51:55"],"user":["default_user"],"umph":[1702889515.9886],"ok":[true],"chunk":[1],"ex":[2],"e.ind":[0],"code":["data <- readRDS(\"data_crop.rds\")"],"message":[""]}
 ,
+{"type":["init_ps"],"time":["2023-12-18 10:09:24"],"user":["default_user"],"umph":[1702890564.4503],"ok":[true]}
+,
