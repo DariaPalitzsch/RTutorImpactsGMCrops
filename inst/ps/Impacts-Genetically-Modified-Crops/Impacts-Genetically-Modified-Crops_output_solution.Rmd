@@ -217,7 +217,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 #https://rpubs.com/mbounthavong/R-plotly-bar-charts
-data <- readRDS("data_crop.rds")
+#data <- readRDS("data_crop.rds")
 #Data preparation
 crucial_data <- data %>% 
   filter(crop %in% c("cotton", "maize", "soybean", "rapeseed")) %>% 
@@ -400,7 +400,7 @@ If you wish to explore background information on general agricultural land use a
 ### Info: Global agricultural land use
 
 <br/>
-<img src="images/agricultural-land.png" alt="drawing" style="width:800px;"/>
+<img src="material/agricultural-land.png" alt="drawing" style="width:800px;"/>
 <br/>
 
 <br/>
@@ -410,7 +410,7 @@ The map illustrates the overall agricultural land use in 2019, measured in milli
 Our focus now shifts to identifying the leading countries in GM cultivation. The subsequent graph displays the GM crop areas in million hectares for the year 2019 per country. It's important to note that only countries with a minimum of 50,000 hectares of cultivated GM crops are represented in this graph.
 
 <br/>
-<img src="images/global-gm-crops-by-countries-2019.png" alt="drawing" style="width:700px;"/>
+<img src="material/global-gm-crops-by-countries-2019.png" alt="drawing" style="width:700px;"/>
 <br/>
 
 <br/>

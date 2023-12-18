@@ -6,3 +6,7 @@
 ,
 {"type":["init_ps"],"time":["2023-12-18 09:29:05"],"user":["default_user"],"umph":[1702888145.418],"ok":[true]}
 ,
+{"type":["init_ps"],"time":["2023-12-18 09:51:52"],"user":["default_user"],"umph":[1702889512.3701],"ok":[true]}
+,
+{"type":["check_chunk"],"time":["2023-12-18 09:51:55"],"user":["default_user"],"umph":[1702889515.9886],"ok":[true],"chunk":[1],"ex":[2],"e.ind":[0],"code":["data <- readRDS(\"data_crop.rds\")"],"message":[""]}
+,
