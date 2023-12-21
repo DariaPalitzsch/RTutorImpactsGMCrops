@@ -15,14 +15,22 @@ Welcome to my Problem Set that is part of my bachelor thesis at the University o
 
 **Note**: Please open all links in a new tab. This will prevent you from losing any progress in the problem set.
 
-GM crops refer to crop plants whose genetic makeup is altered through genetic engineering techniques. These modifications aim to enhance existing traits or introduce entirely new traits that do not naturally occur in the specific crop species. This includes, for example, better resistance to extreme weather or pests (K. Kumar et. al (2020), p. 90). 
-Over the past three decades, genetic manipulation has become increasingly important in the cultivation of crops. However, GM crops are still highly controversial and in many countries cultivation is not allowed (M. Quaim (2009), p.667). 
+The problem set is published here:
+
+* **GitHub**: <https://github.com/DariaPalitzsch/RTutorImpactsGMCrops>
+* **ShinyApps**: <https://dariapalitzsch.shinyapps.io/RTutorImpactsGMCropsApp/>
+
+We can look back at a long history of agriculture that started with the Neolithic Revolution between 10,000 and 5000 years ago all over the world. During this time, human societies started to settle and began farming. Until then, food was only received by hunting and gathering (Weisdorf, 2005, p. 561). Over the centuries, the farming skills were further developed. Advancements such as irrigation systems and crop rotation made farming increasingly profitable. The Industrial Revolution led to the introduction of mechanization and scientific breakthroughs that enhanced efficiency and increased the food production (O’Brien, 1977, p. 167). 
+
+In the 1990s, genetic manipulation (GM) in agriculture was introduced commercially and set another milestone. From then on GM versions of a variety of crops were introduced in different countries. GM crops are defined as crop plants whose genetic makeup is altered through genetic engineering techniques. These modifications have the goal to enhance existing traits or introduce entirely new traits that do not naturally occur in the specific crop species. This includes, for example, better resistance to extreme weather or pests (Kumar et. al, 2020, p. 90). 
+Over the past three decades, genetic manipulation has become increasingly important in the cultivation of crops. However, GM crops are still highly controversial and in many countries cultivation is not allowed (Quaim, 2009, p.667). 
 
 The above-mentioned paper deals with the impact of genetically modified crops on economic factors such as yields, the area required for harvesting, and trade. These influences are investigated using a Triple Difference-in-Difference approach. 
 In this problem set, we will focus on the influences on yields and examine the differences to conventional - non-GM - crops. Since the Triple Difference-in-Difference approach is a comparatively complicated statistical technique, we will approach it step by step. This problem set is therefore structured as follows: 
+<br/>
 In the first chapter we learn about the general structure of the underlying data and define the needed variables. Building on that, the second chapter is intended to give you a deeper insight into the topic. We start with visualizing the general development of yields for different crops. Moreover, we use a map to illustrate countries that are allowing GM cultivation. 
 After that, we begin with the actual analysis. In the third chapter, we start with a first Difference-in-Difference estimation to estimate the impact of the legalization of genetic modification on cotton yields. This approach is extended in the fourth chapter and we additionally look at the differences between crops, namely cotton and rice. Since more than one type of crop is considered, this forms a Triple Difference-in-Difference approach. In the fifth chapter, we address the central specification, which is part of the underlying paper. It is an extension of the Triple Difference-in-Difference estimation in the fourth chapter. It no longer looks at the differences between two crops, but at the time trends of crucial crops. 
-Finally, we recapitulate our results and give a short outlook on the topic.
+Finally, we recapitulate our results. 
 
 **Note**: Chapter 1 to Chapter 4 are intended to bring us closer to the main specification and are my personal analyses. The main specification in Chapter 5 is mainly based on the analysis in the underlying paper. 
 
@@ -38,7 +46,7 @@ Finally, we recapitulate our results and give a short outlook on the topic.
 
 5. Main specification
 
-6. Conclusion and Outlook
+6. Conclusion
 
 7. References 
 
@@ -48,7 +56,7 @@ Throughout the Problem Set, you will encounter three different types of tasks:
 
 * Already solved code chunks allow you to simply `check` the chunk to run it. 
 * Code chunks with placeholders `___` require you to fill in the missing code, such as missing variables or commands. 
-* Quizzes that have always only one correct answer. 
+* Quiz questions require you to choose the right answer.
 
 To run a code chunk, press the `check` button. In some cases, you may need to click `edit` first. If you are unsure of the answer, you can click `hint` or directly press `solution` to view the correct output. 
 
@@ -91,10 +99,10 @@ Before we use this package to succeed with our analysis, let´s engage in a shor
 
 Quiz: What do you think which command fits best to show certain columns?
 
-[1]: filter()
-[2]: mutate()
-[3]: select()
-[4]: arrange()
+(1) filter()
+(2) mutate()
+(3) select()
+(4) arrange()
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -103,8 +111,7 @@ answer.quiz("Overview with dplyr")
 
 <br/>
 
-For displaying certain columns of a data set, we use the `select()` command of the `dplyr`-package. 
-Use the command to keep the following variables: `year`, `yield`, `crop`, `country`, `GM_country`, `period`.
+For displaying certain columns of a data set, we use the `select()` command of the `dplyr`-package. In our case we want to keep the following variables: `year`, `yield`, `crop`, `country`, `GM_country`, `period`.
 
 <b style="color:green">Task:</b> Load the necessary package by calling it in the command `library()`. Additionally, fill in the data set for which we want show the `head()`.
 
@@ -175,10 +182,10 @@ Next, we want to construct a data set named `data_mean` that contains the averag
 
 Quiz: Which order of dplyr operations do we need to achieve the desired data set?
 
-[1]: filter() %>% group_by() %>% summarize()
-[2]: select() %>% filter() %>% summarize()
-[3]: select() %>% mutate() %>% group_by()
-[4]: filter() %>% group_by() %>% arrange()
+(1) filter() %>% group_by() %>% summarize()
+(2) select() %>% filter() %>% summarize()
+(3) select() %>% mutate() %>% group_by()
+(4) filter() %>% group_by() %>% arrange()
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -260,7 +267,7 @@ ggplot(data = ___) +
 <br/>
 
 The map highlights GM-regions in green and reveals notable patterns in the legalization of GM crops. Across North and South America, the cultivation of GM crops has been legalized in nearly all countries. In opposite to that, no GM varieties have ever been harvested in European countries. One exception to that is Romania. Additionally, several African nations have allowed GM cultivation at some point, alongside major countries like India, China and Australia.
-A significant concentration of GM variety production occurs in the United States, Brazil, Argentina, India, Canada and China. In 2014, 94% of the global production of GM varieties transpired there (S. Smyth et al. (2015), p.25).
+A significant concentration of GM variety production occurs in the United States, Brazil, Argentina, India, Canada and China. In 2014, 94% of the global production of GM varieties transpired there (Smyth, Kerr, & Phillips, 2015, p.25).
 
 If you wish to explore background information on general agricultural land use and its comparison to land use for GM cultivation, please refer to the info block below.
 
@@ -306,7 +313,7 @@ data_cotton <- data %>%
 ```
 
 The Difference-in-Difference (DiD) approach is a statistical method to estimate the causal effect of a treatment. 
-This is achieved by computing how the difference between the treatment and control group has changed in the experimental period in comparison to the pre-experimental period (Angrist and Pischke (2008), p. 169 f.). 
+This is achieved by computing how the difference between the treatment and control group has changed in the experimental period in comparison to the pre-experimental period (Angrist & Pischke, 2008, p. 169). 
 
 In our case the treatment means the legalization of the cultivation of GM crops. This divides our data set in two groups that are defined as follows: 
 
@@ -327,9 +334,9 @@ Before we dive into the topic, we need to compute the average yields per year an
 
 Quiz: For which variables should we group our data set `data_cotton` to get the desired average yields?
 
-[1]: year and country.
-[2]: year and GM_country.
-[3]: year and crop.
+(1) year and country.
+(2) year and GM_country.
+(3) year and crop.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -412,9 +419,9 @@ The DiD estimate is $0.46$. In general, the interpretation of the DiD estimator 
 
 Quiz: Which interpretation of our estimate $0.46$ is correct?
 
-[1]: The cultivation of cotton in GM regions in the experimental period increases the average yields of cotton by 0.46 tonnes/hectare compared to the pre-experimental period.
-[2]: The cultivation of cotton in GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to Non-GM regions.
-[3]: The cultivation of cotton in GM and Non-GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to a world where GM cultivation is banned everywhere.
+(1) The cultivation of cotton in GM regions in the experimental period increases the average yields of cotton by 0.46 tonnes/hectare compared to the pre-experimental period.
+(2) The cultivation of cotton in GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to Non-GM regions.
+(3) The cultivation of cotton in GM and Non-GM regions increases the average yields of cotton by 0.46 tonnes/hectare compared to a world where GM cultivation is banned everywhere.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -475,10 +482,10 @@ In a regression analysis, the constant term, also known as the intercept, repres
 
 Quiz: What does the constant $ß_0$ with a value of $1.357$ stand for in our estimation?
 
-[1]: The average yield in the treatment group in the experimental period
-[2]: The average yield in the control group in the pre-experimental period
-[3]: The average yield in the control group
-[4]: The average yield in the treatment group in the pre-experimental period
+(1) The average yield in the treatment group in the experimental period
+(2) The average yield in the control group in the pre-experimental period
+(3) The average yield in the control group
+(4) The average yield in the treatment group in the pre-experimental period
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -496,7 +503,7 @@ When $exp = 0$, we are looking at observations in the pre-experimental period. C
 ## Fixed effects
 
 Now we can proceed to enhance our initial regression model by introducing **fixed effects**, a methodology designed to help address issues related to unobserved differences among individuals or entities, such as countries. Fixed effects become particularly indispensable when considering variables like individual skills or, as in the underlying study´s context, the diverse economic and ecological circumstances across countries.
-In our estimation, we encounter unobserved economic and ecological disparities among countries. However, not controlling for those impacts may result in biased estimates (Best and Wolf (2015), p. 327 f.).
+In our estimation, we encounter unobserved economic and ecological disparities among countries. However, not controlling for those impacts may result in biased estimates (Best & Wolf, 2015, p. 327).
 
 An alternative approach to control for the treatment, which signifies whether a country permits the cultivation of GM crops, involves the inclusion of individual dummies for each country. This procedure is referred to as introducing **fixed effects** to our regression. 
 Country fixed effects account for unobserved, time-invariant country-level heterogeneity. This means that we include differences between countries that are independent of the respective year. 
@@ -527,8 +534,8 @@ The initial column displays the standard regression without accounting for fixed
 
 Quiz: Which of our dependent variables is the DiD estimator?
 
-[1]: exp
-[2]: exp_GM
+(1) exp
+(2) exp_GM
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -547,9 +554,9 @@ In our second regression we addressed varying economic and ecological situations
 
 Quiz: For which variable should we add additional fixed effects to control for heterogeneity?
 
-[1]: period
-[2]: crop
-[3]: year
+(1) period
+(2) crop
+(3) year
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -558,7 +565,7 @@ answer.quiz("Adding fixed effects")
 
 <br/>
 
-You are right. Since we only focus at one crop here, we do not have any variation in crops. However, we do account for changes that vary over the years, such as climatic conditions and input prices, through the inclusion of year fixed effects (Hansen and Wingender (2023), p.225). 
+You are right. Since we only focus at one crop here, we do not have any variation in crops. However, we do account for changes that vary over the years, such as climatic conditions and input prices, through the inclusion of year fixed effects (Hansen & Wingender, 2023, p.225). 
 
 This changes our regression formula as follows:
 
@@ -581,10 +588,10 @@ With the inclusion of year fixed effects, we can now examine the stargazer outpu
 
 Quiz: Look at the regression output. What does change in the third column compared to the second?
 
-[1]: The DiD estimator.
-[2]: The significance level of the DiD estimator.
-[3]: The standard error of the DiD estimator.
-[4]: Nothing.
+(1) The DiD estimator.
+(2) The significance level of the DiD estimator.
+(3) The standard error of the DiD estimator.
+(4) Nothing.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -607,12 +614,12 @@ $$\widehat{SE}(\hat\beta_i)=\sqrt{s^2[(\mathbf{X}^T\mathbf{X})^{-1}]_{ii}}$$
  * $s$ is the standard error of the regression
  * $X$ is the covariance matrix with dimension $n \times (p+1)$
 
-The prerequisite for using standard errors is that the error terms are **independently and identically distributed** (iid). This implies that all error terms have the same probability distribution and are mutually independent. For that all error terms would have to be uncorrelated (Fahrmeir et al. (2022), p.2 f.). The iid assumption is commonly violated in papers (Cameron and Miller (2010), p.3).
+The prerequisite for using standard errors is that the error terms are **independently and identically distributed** (iid). This implies that all error terms have the same probability distribution and are mutually independent. For that all error terms would have to be uncorrelated (Fahrmeir et al., 2022, p.2). The iid assumption is commonly violated in papers (Cameron & Miller, 2010, p.3).
 Since we know that the error term in our regression includes all impacts that we do not control for in our regression, it is unlikely that this assumption is fulfilled in our estimation. As we are handling with individual countries it is probable that there are similarities in economical and ecological circumstances between neighboring countries such as common regulations and laws in the EU.
 
 ## Cluster-Robust Standard errors
 
-For data where the iid assumption is not fulfilled, **cluster-robust standard errors** are employed, as they allow error terms to be correlated within clusters. In the context of DiD examples, cluster-robust standard errors tend to be larger than regular standard errors. This is attributed to a high correlation between the response variable $y$ and the errors within the clusters (Cameron and Miller (2015), p.7).
+For data where the iid assumption is not fulfilled, **cluster-robust standard errors** are employed, as they allow error terms to be correlated within clusters. In the context of DiD examples, cluster-robust standard errors tend to be larger than regular standard errors. This is attributed to a high correlation between the response variable $y$ and the errors within the clusters (Cameron & Miller, 2015, p.7).
 
 In R we can display cluster-robust standard errors for the countries by adding them to our `felm()` command. 
 To achieve this, we need to append `| 0 |` after the fixed effects, where the `0` serves as a placeholder. 
@@ -641,9 +648,9 @@ In this chapter we introduced the DiD approach to examine the yield differences 
 
 However, it is important to acknowledge the limitations that were left out throughout this approach to focus on the initial intuition of the DiD estimation. Firstly, our analysis focused on a single crop, namely cotton. While this gives us a first insight into the DiD methodology, it does not capture the exact impact of GM crops on yields.
 
-In this context, we should also reflect upon the interpretation of our estimates. The **treatment effect** examines the impact of the actual harvest of GM cotton on cotton yields. Given that the variables `GM` and `GM_country` only indicate if a country has ever adopted any GM varieties, all observations are included in the treatment group, regardless of whether GM cotton was actually harvested in the respective country and year. Consequently, our estimation does not precisely represent a treatment effect. It rather resembles an **intention-to-treat effect** (Hollis and Campbell (1999), p. 673). To derive the treatment effect, it would be necessary to consider the actual year of GM legalization per country, which is stored in the variable `GMdefacto`. We will revisit this aspect later. 
+In this context, we should also reflect upon the interpretation of our estimates. The **treatment effect** examines the impact of the actual harvest of GM cotton on cotton yields. Given that the variables `GM` and `GM_country` only indicate if a country has ever adopted any GM varieties, all observations are included in the treatment group, regardless of whether GM cotton was actually harvested in the respective country and year. Consequently, our estimation does not precisely represent a treatment effect. It rather resembles an **intention-to-treat effect** (Hollis & Campbell, 1999, p. 673). To derive the treatment effect, it would be necessary to consider the actual year of GM legalization per country, which is stored in the variable `GMdefacto`. We will revisit this aspect later. 
 
-Another limitation of our approach concerns the assumption of **parallel trends**, a prerequisite for the validity of the DiD approach. This assumption implies that in the absence of the treatment (GM crop adoption), the treatment and control group would follow similar trends over time. One can check if this assumption is violated by looking at the trends in the pre-experimental period (Wing, Simon and Bello-Gomez (2018), p. 457). Given that our main specification primarily focuses on linear trends rather than distinct periods, we opt not to explicitly specify this consideration in our approach.
+Another limitation of our approach concerns the assumption of **parallel trends**, a prerequisite for the validity of the DiD approach. This assumption implies that in the absence of the treatment (GM crop adoption), the treatment and control group would follow similar trends over time. One can check if this assumption is violated by looking at the trends in the pre-experimental period (Wing, Simon, & Bello-Gomez, 2018, p. 457). Given that our main specification primarily focuses on linear trends rather than distinct periods, we opt not to explicitly specify this consideration in our approach.
 
 <br/>
 
@@ -669,7 +676,7 @@ Furthermore, we observe two time periods resulting from the first commercial int
 * Pre-experimental period: 1980 until 1995
 * Experimental period: 1996 until 2019
 
-The Triple DiD approach expands upon this framework. Both the treatment and the control group are now subdivided into two groups. Consequently, each country in our data set can be divided into two groups (Olden and Moen, 2022, p. 534): 
+The Triple DiD approach expands upon this framework. Both the treatment and the control group are now subdivided into two groups. Consequently, each country in our data set can be divided into two groups (Olden & Moen, 2022, p. 534): 
 
 * Group `cotton`: The group that can benefit from the treatment 
 * Group `rice`: The group that cannot benefit from the treatment
@@ -736,8 +743,8 @@ We now have two data sets for cotton and rice containing the average yields per 
 
 Quiz: Do we observe values in the treatment group for rice?
 
-[1]: Yes.
-[2]: No.
+(1) Yes.
+(2) No.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -813,7 +820,7 @@ DiD_cotton = (1.89 - 1.44) - (1.35 - 1.36)
 In these crop-specific calculations of `DiD_cotton` and `DiD_rice`, the differences between the treatment and control groups as well as the differences between the pre-experimental phase before 1996 and the experimental phase are taken into account. 
 
 By now looking at two different types of crops, we add a third "difference" to our estimate. 
-Thus, the formula of the Triple DiD estimate is as follows (Olden and Moen (2022), p. 538):
+Thus, the formula of the Triple DiD estimate is as follows (Olden & Moen, 2022, p. 538):
 
 $${DiD} = [(\overline{y}_{c,exp,gm} - \overline{y}_{c,exp,nongm}) - (\overline{y}_{c,pre,gm} - \overline{y}_{c,pre,nongm})] - [(\overline{y}_{r,exp,gm} - \overline{y}_{r,exp,nongm}) - (\overline{y}_{r,pre,gm} - \overline{y}_{r,pre,nongm})]$$
 
@@ -841,7 +848,7 @@ data_reg <- data %>%
   ___(crop %in% c("cotton", "rice")) 
 ```
 
-The regression formula in the last chapter did only cover cotton. Now that we have two different crops, we have to extend the formula by adding interaction within crops. To do so, we do not only extend the previous interaction term. We also add interaction between each two variables (Muralidharan and Prakash (2017), p. 331): 
+The regression formula in the last chapter did only cover cotton. Now that we have two different crops, we have to extend the formula by adding interaction within crops. To do so, we do not only extend the previous interaction term. We also add interaction between each two variables (Muralidharan & Prakash, 2017, p. 331): 
 
 $$yield_{i,c,t} = ß_{0} + ß_{1} \cdot exp_{t} \cdot GM_{i} \cdot {crop\_cotton}_{c} + ß_{2} \cdot exp_{t} \cdot GM_{i} + ß_{3} \cdot GM_{i} \cdot {crop\_cotton}_{c} + ß_{4} \cdot exp_{t} \cdot {crop\_cotton}_{c} + ß_{5} \cdot exp_{t} + ß_{6} \cdot GM_{i} + ß_{7} \cdot {crop\_cotton}_{c} + u_{i,c,t}$$
 
@@ -861,10 +868,10 @@ The needed interaction terms are stored in the variables `exp_GM_crop`, `exp_GM`
 
 Quiz: The coefficient of which interaction term is the Triple DiD estimator?
 
-[1]: exp_GM_crop
-[2]: exp_GM
-[3]: GM_crop
-[4]: exp_crop
+(1) exp_GM_crop
+(2) exp_GM
+(3) GM_crop
+(4) exp_crop
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -911,10 +918,10 @@ To account for the impact of these persistent factors in our estimation, we inco
 
 Quiz: For which variable must fixed effects be added to control for such permanent influences?
 
-[1]: crop
-[2]: country
-[3]: GM
-[4]: exp
+(1) crop
+(2) country
+(3) GM
+(4) exp
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -972,7 +979,7 @@ As we concluded our initial Triple DiD approach, we can now take a closer look a
 Across all regression fits this effect remains consistent. Additionally, it is also noticeable that all estimators are not significant at any relevant level. We incorporated cluster-robust standard errors for `country` from the beginning and observe the same standard error for our DiD estimator of $0.251$ in every regression. 
 
 In our previous regression analyses, we addressed unobserved differences by introducing individual fixed effects at the country, year and crop levels. Nevertheless, the Triple DiD estimation provides the flexibility to incorporate more refined fixed effects that account for variation within the above-mentioned fixed effects categories. For instance, we can introduce **crop-by-year fixed effects** that capture global trends relating factors such as technological improvements or changes that affect specific crops. 
-By adding **country-by-year fixed effect** we control for changes in a specific country that are depending on the year. **Crop-by-country fixed effects** account for variations in the suitability of crops for different countries (Hansen and Wingender (2023), p.225). 
+By adding **country-by-year fixed effect** we control for changes in a specific country that are depending on the year. **Crop-by-country fixed effects** account for variations in the suitability of crops for different countries (Hansen & Wingender, 2023, p.225). 
 
 This variation leads to a new regression formula: 
 
@@ -1006,8 +1013,8 @@ Compare `country` and `country-crop` cluster-robust standard errors when you ans
 
 Quiz: Which cluster-robust standard errors require a more stringent assumption regarding error terms?
 
-[1]: Country cluster-robust standard errors
-[2]: Country-crop cluster-robust standard errors
+(1) Country cluster-robust standard errors
+(2) Country-crop cluster-robust standard errors
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -1016,7 +1023,7 @@ answer.quiz("Country-crop cluster-robust standard errors")
 
 <br/>
 
-You are right. While introducing more nuanced fixed effects adds more flexibility to our model, it is important to note that cluster-robust standard errors on `country-crop` level are a more stringent assumption compared to the previously specified cluster-robust standard errors at the `country` level. While `country` cluster-robust standard errors allow error terms to be correlated within a country, `country-crop` cluster-robust standard errors do only allow correlation of error terms within a country for a specific crop (Bertrand et al. (2004), p.250 f.). 
+You are right. While introducing more nuanced fixed effects adds more flexibility to our model, it is important to note that cluster-robust standard errors on `country-crop` level are a more stringent assumption compared to the previously specified cluster-robust standard errors at the `country` level. While `country` cluster-robust standard errors allow error terms to be correlated within a country, `country-crop` cluster-robust standard errors do only allow correlation of error terms within a country for a specific crop (Bertrand, Duflo, & Mullain, 2004, p.250 f.). 
 Nevertheless, we will include cluster-robust standard errors at the country-crop level in the upcoming main specification in order to replicate the authors' results.
 
 <b style="color:green">Task:</b> Just `check` the following code chunk. 
@@ -1060,7 +1067,7 @@ This extension addresses a significant limitation in our previous analyses. Prio
 data <- readRDS("data_crop.rds")
 ```
 
-Let us start our analysis by examining the crop specific variables of `GMtrend`. To demonstrate how this variables are computed, we display the variables `GMtrendc_cotton`, `GMdefacto`, `GMwithdrawn` along with their corresponding years. Since the value of `GMdefacto` depends on the specific country, we only present observations in the country Brazil. Additionally, we filter the observations to include only cases where `GMtrendc_cotton` is not equal to $0$. 
+Let us start our analysis by examining the crop specific variables of `GMtrend`. To demonstrate how these variables are computed, we display the variables `GMtrendc_cotton`, `GMdefacto`, `GMwithdrawn` along with their corresponding years. Since the value of `GMdefacto` depends on the specific country, we only present observations in the country Brazil. Additionally, we filter the observations to include only cases where `GMtrendc_cotton` is not equal to $0$. 
 
 <b style="color:green">Task:</b> `Check` the code chunk to display the desired output. 
 
@@ -1075,7 +1082,7 @@ head(GM_data)
 ```
 
 The variable `GMtrendc_cotton` quantifies the number of successive GM harvests of cotton up until, and including, the current year. 
-In our output, we see that the variable is computed by subtracting the year of actual GM cultivation legalization in a country (`GMdefacto`) from the current year. In our case the the year of actual GM cultivation for Brazil is $2007$.
+In our output, we see that the variable is computed by subtracting the year of actual GM cultivation legalization in a country (`GMdefacto`) from the current year. In our case the year of actual GM cultivation for Brazil is $2007$. In the unusual case that `GMwithdrawn` is not $NA$, the variable `GMtrendc_cotton` would be calculated by subtracting `GMdefacto` from `GMwithdrawn`. 
 If the year in the current observation is earlier than `GMdefacto` in that country, the value of `GMtrendc_cotton` would be $0$. 
 
 With the introduction of crop-specific variables that consider the actual legalization of GM crops, we now have varying treatment periods for countries. Consequently, we can no longer divide our observation period into a pre-experimental and an experimental period, as done in the previous chapters. 
@@ -1108,8 +1115,8 @@ final_data <- data %>%
 
 Quiz: Does this code generate the right event window?
 
-[1]: Yes.
-[2]: No.
+(1) Yes.
+(2) No.
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -1193,18 +1200,17 @@ info("Logging the dependent variable")
 
 The regressions allow us to explore the effects for each crop variety individually. Given our focus on cotton in the preceding chapters, we begin our examination by looking at the estimator for cotton in the third row. 
 
-Notably, both regressions yield highly significant estimates. In both cases the standard errors and the estimates are similar, albeit the regression coefficient in the second column is slightly smaller. This discrepancy may imply that the larger event window in the first column included more observations in GM regions. Our regression estimates a significant effect, indicating a $4.3$ percent faster yearly yield increase in GM regions compared to Non-GM regions. Such a large effect appears plausible when we look at cotton yields in India. Historically, India had one of the lowest average cotton yields globally. However, the yields have increased by over 40% since 2002, where GM varieties of cotton were introduced there (Choudhary and Gaur (2010), p. 9 f.). 
+Notably, both regressions yield highly significant estimates. In both cases the standard errors and the estimates are similar, albeit the regression coefficient in the second column is slightly smaller. This discrepancy may imply that the larger event window in the first column included more observations in GM regions. Our regression estimates a significant effect, indicating a $4.3$ percent faster yearly yield increase in GM regions compared to Non-GM regions. Such a large effect appears plausible when we look at cotton yields in India. Historically, India had one of the lowest average cotton yields globally. However, the yields have increased by over 40% since 2002, where GM varieties of cotton were introduced there (Choudhary & Gaur, 2010, p.9 f.). 
 
 The estimate of `GMtrendc_maize` undergoes changes when we adjust the event window. Specifically, the estimate decreases from $0.027$ to $0.018$. According to our regression results, the introduction of GM maize corresponds to a $1.8$ percent faster annual increase in maize yields within our ten-year estimation window, compared to untreated crops. 
 
 Conversely, the observed effects for soybean and rapeseed are relatively small. 
-For soybean, the yearly yield increase is $0.7$ percent faster per year in GM regions compared to Non-GM regions. The reason why there is no significant effect here could be due to the replacement of herbicides by genetically modified versions, resulting in similar yields in Non-GM regions (Bonnie (2008), p. 26).
+For soybean, the yearly yield increase is $0.7$ percent faster per year in GM regions compared to Non-GM regions. The reason why there is no significant effect here could be due to the replacement of herbicides by genetically modified versions, resulting in similar yields in Non-GM regions (Bonnie, 2008, p. 26).
 For rapeseed, there is a remarkable discrepancy between the two regressions. In the first regression, the estimator for `GMtrendc_rapeseed` is not significant at any level, with an estimated value of $0.004$. In the second regression, however, the estimator is $0.011$ and reaches significance at the 5%-level.
-
 
 As previously discussed, the authors of the underlying paper do not explore various cluster-robust standard errors. Their chosen approach involves clustering at the country-crop level, which requires a rather stringent assumption, that the error terms are only correlated within a specific country for a specific crop.
 
-Before we recapitulate our analyses, we want to assess the robustness of the authors´ estimation by substituting the country-crop cluster-robust standard errors with country cluster-robust standard errors, used in Chapter 3 and at the beginning of Chapter 4. Such **robustness checks** are quite common in empirical studies and analyses (Xun and White (2013), p.294). 
+Before we recapitulate our analyses, we want to assess the robustness of the authors´ estimation by substituting the country-crop cluster-robust standard errors with country cluster-robust standard errors, used in Chapter 3 and at the beginning of Chapter 4. Such **robustness checks** are quite common in empirical studies and analyses (Xun & White, 2013, p.294). 
 
 **Note**: This specification is not part of the underlying paper!
 
@@ -1223,10 +1229,10 @@ Have a closer look at the two regression output and answer the following quiz:
 
 Quiz: What does change in the second column compared to the first regression?
 
-[1]: Standard errors
-[2]: Significance
-[3]: Estimates
-[4]: Nothing
+(1) Standard errors
+(2) Significance
+(3) Estimates
+(4) Nothing
 
 ```{r eval=FALSE}
 # Run line to answer the quiz above
@@ -1238,16 +1244,17 @@ You are right. Our regression does not change when we cluster on country level.
 In both regressions we include country-year, crop-year and country-crop fixed effects. 
 The first column represents the regression with country-crop cluster-robust standard errors. In the second regression we only cluster on country level. 
 
-This change does not affect the results. We get the exact same estimates, standard errors and significance for all four crops. 
+Interestingly, this modification has no impact on the results. The estimates, standard errors, and significance levels for all four crops remain identical. This implies that the more stringent assumption, where standard errors are allowed to be correlated only within a specific country for a specific crop, does not alter our estimation compared to country cluster-robust standard errors.
 
 ## Summary
 
-
-
+In this chapter, we specified our main specification, following the approach of the underlying paper. Expanding the Triple DiD approach introduced in the fourth chapter, we maintained the incorporation of country-year, crop-year, and country-crop fixed effects, along with country-crop cluster-robust standard errors. The key modification was the utilization of `GMtrend_`-variables for each crop, namely cotton, soybean, maize, and rapeseed. This adjustment enabled us to identify the actual period of treatment for each crop, defining an event window spanning ten years before and after the introduction of the treatment. For the correct event window, we adapted the code from the authors of the underlying paper. 
+We observed highly significant effects for cotton and maize. In contrast, the observed effects for soybean and rapeseed were relatively small and not significant at any relevant level. Adapting the authors' code led to an increase in the estimator and significance for rapeseed. Moreover, the estimation for maize increased after our adjustment of the event window.
+Concluding our analysis, we conducted a robustness check by altering the cluster-robust standard errors from the country-crop to the crop level. Remarkably, our estimation remained consistent under this change.
 
 <br/>
 
-## Exercise 6 -- Conclusion and Outlook 
+## Exercise 6 -- Conclusion
 
 In this problem set we delved into the impacts of genetic manipulation on crop yields. We employed a Triple Difference-in-Difference approach to examine differences between conventional and GM crops. 
 The initial two chapters established the groundwork by exploring the data set. In **Chapter 1** we explored the data set that set the basis for all our further analyses. We examined the most crucial columns such as `year`, `yield`, `country` and `crop`. We looked at the wide range of crops in our data set and highlighted the four crucial crops cotton, soybean, maize and rapeseed. 
@@ -1258,11 +1265,7 @@ Building on this, **Chapter 4** expanded our approach by incorporating rice, lea
 
 **Chapter 5** adopted the main specification from the underlying paper, extending the analysis to include all four crucial crops cotton, soybean, maize and rapeseed. Compared to the preceding analyses we no longer looked at two periods, but included ten-year event windows around the GM introduction of each crop in each country. Additionally, we estimated logged yields and found significant effects for cotton, soybean, and rapeseed. For instance, cotton exhibited a $4.3$ percent faster yearly yield increase in GM regions compared to Non-GM regions.
 
-In conclusion, the problem set provided valuable insights into the complex dynamic of genetic manipulation and its impact on crop yields. The step-by-step approach aimed to make the complex Triple Difference-in-Differences methodology more understandable and provide a nuanced understanding of the multiple assumptions and methodologies involved
-
-### Outlook and related literature
-
-
+In conclusion, the problem set provided valuable insights into the complex dynamic of genetic manipulation and its impact on crop yields. The step-by-step approach aimed to make the complex Triple Difference-in-Differences methodology more understandable and provide a nuanced understanding of the multiple assumptions and methodologies involved.
 
 
 <br/>
@@ -1271,42 +1274,47 @@ In conclusion, the problem set provided valuable insights into the complex dynam
 
 **Academic Papers and Books**
 
-A. Olden and J. Moen (2022). "The triple difference estimator". The Econometrics Journal (2022) volume 25
+Angrist, J., Pischke, J.S. (2008). Mostly Harmless Econometrics: An Empiricist's Companion. _Princeton university press_. ISBN: 978-0-691-12035-5
 
-B. Choudhary and K. Gaur (2010). "Bt Cotton in India: A Country Profile. ISAAA Series of Biotech Crop Profiles". ISAAA: Ithaca, NY.
+Bertrand M., Duflo, E., Mullain, S. (2004). How much should we trust Differences-In-Differences estimates?. _The Quarterly journal of economics_, 119(1), 249-275
 
-C. Cameron and D. Miller (2015). "A Practitioner’s Guide to Cluster-Robust Inference". Journal of Human Resources (2015) volume 50(2)
+Best, H., Wolf, C. (2015). The Sage handbook of regression analysis and causal inference. _Sage Publications_. ISBN:978-1-4462-5244-4
 
-C. Cameron and D. Miller (2010). "Robust inference with clustered data". Working Paper, No. 10-7, University of California, Department of Economics, Davis, CA
+Bonnie, S. (2008). Genetically modified glyphosate-tolerant soybean in the USA: adoption factors, impacts and prospects. A review. _Agronomy for Sustainable Development_, 28(1), 21-32
 
-C. W. Hansen and A. M. Wingender (2023). "National and Global Impacts of Genetically Modified Crops". Insights 2023, 5(2): 224–240
+Cameron, C., Miller, D. (2010). Robust inference with clustered data. _Working Paper_, 10-7, University of California, Department of Economics, Davis, CA
 
-C. Wing, K. Simon and R. A. Bello-Gomez (2018). "Designing Difference in Difference Studies: Best Practices for Public Health Policy Research". Annu. Rev. Public Health 2018. 39:453–69
+Cameron, C., Miller, D. (2015). A Practitioner’s Guide to Cluster-Robust Inference. _Journal of Human Resources_, 50(2), 317-372
 
-G. Grégoire (2014). "Multiple Linear Regression". EAS Publications Series 66(2014)
+Choudhary, B., Gaur, K. (2010). Bt Cotton in India: A Country Profile. _ISAAA Series of Biotech Crop Profiles._ ISAAA: Ithaca, NY.
 
-H. Best and C. Wolf (2015). "The Sage handbook of regression analysis and causal inference". Sage Publications. ISBN:
-978-1-4462-5244-4
+Fahrmeir, L. , Kneib, T., Lang, S., Marx, B. D. (2022). Regression. _Heidelberg: Springer Verlag_
 
-J. Angrist and J.S. Pischke (2008). "Mostly Harmless Econometrics: An Empiricist's Companion". Princeton university press. ISBN: 978-0-691-12035-5
+Grégoire, G. (2014). Multiple Linear Regression. _EAS Publications Series_, 66, 45-72
 
-K. Kumar et al. (2020). "Genetically modified crops: current status and future prospects". Planta, 251(4):1
+Hansen, C. W., Wingender, A. M. (2023). National and Global Impacts of Genetically Modified Crops. _Insights_, 5(2), 224–240
 
-K. Muralidharan and N. Prakash (2017). "Cycling to School: Increasing Secondary School Enrollment for Girls in India". American Economic Journal: Applied Economics 2017, 9(3): 321–350
+Hollis, S., Campbell, F. (1999). What is meant by intention to treat analysis? Survey of published randomised controlled trials. _BMJ: British Medical Journal_, 319(7211), 670-674
 
-L. Xun and H. White (2013). "Robustness checks and robustness tests in applied economics". Journal of Econometrics 178 (2014) 194–206
+Kumar, K., et al. (2020). Genetically modified crops: current status and future prospects. _Planta_, 251(4)1, 91
 
-M. Bertrand et al. (2004). "How much should we trust Differences-In-Differences estimates?". The Quarterly journal of economics 119(1)
+Muralidharan, K., Prakash, N. (2017). Cycling to School: Increasing Secondary School Enrollment for Girls in India. _American Economic Journal: Applied Economics_ , 9(3), 321–350
 
-M. Qaim (2009). "The Economics of Genetically Modified Crops". Annual Review of Resource Economics 2009 1:1
+O’Brien, P. K. (1977). Agriculture and the Industrial Revolution. _The Economic History Review_, 30(1), 166–181
 
-M. Verbeek (2004). "A Guide to Modern Econometrics". John Wiley & Sons, Ltd. ISBN: 0-470-85773-0
+Olden, A., Moen, J. (2022). The triple difference estimator. _The Econometrics Journal_, 25(3), 531-553
 
-S. Bonnie (2008). "Genetically modified glyphosate-tolerant soybean in the USA: adoption factors, impacts and prospects. A review". Agronomy for Sustainable Development, 2008, 28(1), pp.21-32. hal-00886404
+Qaim, M. (2009). The Economics of Genetically Modified Crops. _Annual Review of Resource Economics_, 299(5608), 900-902
 
-S. Hollis and F. Campbell (1999). "What is meant by intention to treat analysis? Survey of published randomised controlled trials.". BMJ. 1999 Sep 11 volume 319(7211)
+Smyth, S.,Kerr, W. A., Phillips, P. W. B. (2015). Global economic, environmental and health benefits from GM crop adoption. _Global Food Security_, 7, 24-29
 
-S. Smyth et al. (2015). "Global economic, environmental and health benefits from GM crop adoption" Global Food Security 7(2015) 
+Verbeek, M. (2004). A Guide to Modern Econometrics. _John Wiley & Sons, Ltd._ ISBN: 0-470-85773-0
+
+Wing, C., Simon, K., Bello-Gomez, R. A. (2018). Designing Difference in Difference Studies: Best Practices for Public Health Policy Research. _Annu. Rev. Public Health_, 39, 453–69
+
+Weisdorf, J. L. (2005). From foraging to farming: explaining the Neolithic Revolution. _Journal of Economic surveys_, 19(4),  561-586
+
+Xun, L., White, H. (2013). Robustness checks and robustness tests in applied economics. _Journal of Econometrics_, 178, 194–206
 
 **R Packages**
 
@@ -1316,7 +1324,7 @@ M. Hlavac (2022). stargazer: Well-Formatted Regression and Summary Statistics Ta
 
 H. Wickham (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. ISBN 978-3-319-24277-4, https://ggplot2.tidyverse.org.
 
-H. WIckham, D. Vaughan, M. Girlich (2023). tidyr: Tidy Messy Data. R package version 1.3.0, https://github.com/tidyverse/tidyr, https://tidyr.tidyverse.org.
+H. Wickham, D. Vaughan, M. Girlich (2023). tidyr: Tidy Messy Data. R package version 1.3.0, https://github.com/tidyverse/tidyr, https://tidyr.tidyverse.org.
 
 S. Gaure (2013). “lfe: Linear group fixed effects.” The R Journal, 5(2), 104-117. User documentation of the 'lfe' package. R package version 2.9-0. https://journal.r-project.org/archive/2013/RJ-2013-031/RJ-2013-031.pdf.
 
