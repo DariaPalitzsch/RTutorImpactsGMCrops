@@ -11,11 +11,11 @@ user.name = 'Jane Doe'
 
 Author: Daria Palitzsch
 
-Welcome to my Problem Set that is part of my bachelor thesis at the University of Ulm. In the following analysis we exploit and discuss the National and Global Impacts of Genetically Modified (GM) Crops. It is based on an empirical analysis in the paper [National and Global Impacts of Genetically Modified Crops](https://www.aeaweb.org/articles?id=10.1257/aeri.20220144) by Casper Worm Hansen and Asger Mose Wingender (2023). The data and stata code to this paper can be found [here](https://www.openicpsr.org/openicpsr/project/178041/version/V1/view).
+Welcome to my Problem Set that is part of my bachelor thesis at the University of Ulm. In the following analysis we exploit and discuss the National and Global Impacts of Genetically Modified (GM) Crops. The Problem Set is based on an empirical analysis in the paper [National and Global Impacts of Genetically Modified Crops](https://www.aeaweb.org/articles?id=10.1257/aeri.20220144) by Casper Worm Hansen and Asger Mose Wingender (2023). The data and stata code to this paper can be found [here](https://www.openicpsr.org/openicpsr/project/178041/version/V1/view).
 
 **Note**: Please open all links in a new tab. This will prevent you from losing any progress in the problem set.
 
-The problem set is published here:
+The Problem Set is published here:
 
 * **GitHub**: <https://github.com/DariaPalitzsch/RTutorImpactsGMCrops>
 * **ShinyApps**: <https://dariapalitzsch.shinyapps.io/RTutorImpactsGMCropsApp/>
@@ -109,7 +109,7 @@ Quiz: What do you think which command fits best to show certain columns?
 
 For displaying certain columns of a data set, we use the `select()` command of the `dplyr`-package. In our case we want to keep the following variables: `year`, `yield`, `crop`, `country`, `GM_country`, `period`.
 
-<b style="color:green">Task:</b> Load the necessary package by calling it in the command `library()`. Additionally, fill in the data set for which we want show the `head()`.
+<b style="color:green">Task:</b> Load the necessary package by calling it in the command `library()`. Additionally, fill in the data set for which we want to show the `head()`.
 
 ```{r "2_3"}
 #load the required package
@@ -189,7 +189,7 @@ Quiz: Which order of dplyr operations do we need to achieve the desired data set
 
 <br/>
 
-We use `filter()` to select the rows that contain the needed crops. After that the data set is grouped by crop and year. With `summarize()` we get one yield per group by calculating the average yield. Additionally, we reorder the crops in the `levels()` command to prepare a nice legend four our plot. 
+We use `filter()` to select the rows that contain the needed crops. After that the data set is grouped by crop and year. With `summarize()` we get one yield per group by calculating the average yield. Additionally, we reorder the crops in the `levels()` command to prepare a nice legend for our plot. 
 
 <b style="color:green">Task:</b> Just `check` the following code.
 
@@ -225,8 +225,8 @@ ggplot(data = data_mean) +
 
 <br/>
 
-Take a look at the graph where the lines represent the four crucial crops for our later analyses. The graph depicts the average yields per year for each respective crop. The yield scale on the y-axis spans from $1$ to $4$ average tonnes per hectare. The observation period stretches from $1986$ to $2019$. Maize consistently generates the highest yields, starting at $3$ and progressing to $4$ over the years, with the curve indicating a steep development.
-Rapeseed also demonstrates an upward trend, but with a less steep curve. The rapeseed yields range from approximately $2.75$ to $2.5$.
+Take a look at the graph where the lines represent the four crucial crops for our later analyses. The graph depicts the average yields per year for each respective crop. The yield scale on the y-axis spans from $1$ to $4$ average tonnes per hectare. The observation period stretches from $1986$ to $2019$. Maize consistently generates the highest yields, starting at around $2.5$ and progressing to $4.5$ over the years, with the curve indicating a steep development.
+Rapeseed also demonstrates an upward trend, but with a less steep curve. The rapeseed yields range from approximately $1.75$ to $2.5$.
 Soybean and cotton have similar trends and are at lower levels compared to the others. Both crops show minimal growth, with yields hovering around $1.5$.
 
 As previously mentioned, our crop graph does not differentiate between GM and Non-GM harvests. We now want to explore this distinction by examining the variable `GM_country`, which will be crucial for our subsequent analyses. This variable informs us about whether a country has ever adopted any GM varieties. `GM_country` is derived from the variable `GMdefacto`, which contains the year of the first commercial GM harvest in the respective country and is $0$ if the country has never adopted any GM variety. Therefore, the variable `GM_country` is equal to "GM-region" if `GMdefacto` contains a year for this country and "NonGM-region" otherwise. To visualize the countries, we can use a world map. The required coordinates are stored in the data set `data_map.rds`.
@@ -483,8 +483,7 @@ When $exp = 0$, we are looking at observations in the pre-experimental period. C
 
 ## Fixed effects
 
-Now we can proceed to enhance our initial regression model by introducing **fixed effects**, a methodology designed to help address issues related to unobserved differences among individuals or entities, such as countries. Fixed effects become particularly indispensable when considering variables like individual skills or, as in the underlying study´s context, the diverse economic and ecological circumstances across countries.
-In our estimation, we encounter unobserved economic and ecological disparities among countries. However, not controlling for those impacts may result in biased estimates (Best & Wolf, 2015, p. 327).
+Now we can proceed to enhance our initial regression model by introducing **fixed effects**, a methodology designed to help address issues related to unobserved differences among individuals or entities, such as countries. Fixed effects become particularly indispensable when considering variables like individual skills or, as in the underlying study´s context, the diverse economic and ecological circumstances across countries. However, not controlling for those impacts may result in biased estimates (Best & Wolf, 2015, p. 327).
 
 An alternative approach to control for the treatment, which signifies whether a country permits the cultivation of GM crops, involves the inclusion of individual dummies for each country. This procedure is referred to as introducing **fixed effects** to our regression. 
 Country fixed effects account for unobserved, time-invariant country-level heterogeneity. This means that we include differences between countries that are independent of the respective year. 
@@ -584,10 +583,10 @@ The standard error of an estimate in a simple regression is defined as follows (
 $$\widehat{SE}(\hat\beta_i)=\sqrt{s^2[(\mathbf{X}^T\mathbf{X})^{-1}]_{ii}}$$
 
  where 
- * $y = ß_0 + ß_1 x + ... + ß_p x_p + \epsilon$ is the underlying regression
+ * $y = ß_0 + ß_1 x_1 + ...  + ß_i x_i + ... + ß_p x_p + \epsilon$ is the underlying regression
  * $SE(\hat\beta_i)$ is the standard error of the estimate $\hat\beta_i$
  * $s$ is the standard error of the regression
- * $X$ is the covariance matrix with dimension $n \times (p+1)$
+ * $X$ is the covariance matrix
 
 The prerequisite for using standard errors is that the error terms are **independently and identically distributed** (iid). This implies that all error terms have the same probability distribution and are mutually independent. For that all error terms would have to be uncorrelated (Fahrmeir et al., 2022, p.2). The iid assumption is commonly violated in papers (Cameron & Miller, 2010, p.3).
 Since we know that the error term in our regression includes all impacts that we do not control for in our regression, it is unlikely that this assumption is fulfilled in our estimation. As we are handling with individual countries it is probable that there are similarities in economical and ecological circumstances between neighboring countries such as common regulations and laws in the EU.
@@ -1021,7 +1020,7 @@ The four variables are all derived from the variable `GMtrend` that contains the
 * `GMdefacto`: This variable contains the year of the actual legalization of GM cultivation of a crop in a country and is $0$ otherwise.
 * `GMwithdrawn`: This variable contains the year of abolition of GM cultivation of a crop in a country and is NA otherwise.
 
-This extension addresses a significant limitation in our previous analyses. Prior to this enhancement, we could not definitively determine whether a country in the treatment group was effectively treated in a specific year. The introduction of the `GMtrend` variable for each crop enables us to precisely identify the period of treatment for each country and crop. 
+This extension addresses a significant limitation in our previous analyses. Prior to this enhancement, we could not definitively determine whether a crop in a country in the treatment group was effectively treated in a specific year. The introduction of the `GMtrend` variable for each crop enables us to precisely identify the period of treatment for each country and crop. 
 
 <b style="color:green">Task:</b> Just `check` the following code to load the data set once again. 
 
@@ -1102,7 +1101,7 @@ correct_data <- data %>%
   filter((relative_yr <= 10 & relative_yr >= -10) | is.na(relative_yr))
 ```
 
-Before we show the authors' regression without the correct event window and our regression side by side. Let us have a look at the regression formula. 
+Before we show the authors' regression without the correct event window and our regression side by side, let us have a look at the regression formula. 
 Like in our last regression in Chapter 4 we include `country_yr`, `crop_yr` and `country_crop` fixed effects and cluster our standard error on `country_crop`. 
 
 The regression is defined as follows: 
@@ -1212,7 +1211,7 @@ Concluding our analysis, we conducted a robustness check by altering the cluster
 ## Exercise 6 -- Conclusion
 
 In this problem set we delved into the impacts of genetic manipulation on crop yields. We employed a Triple Difference-in-Difference approach to examine differences between conventional and GM crops. 
-The initial two chapters established the groundwork by exploring the data set. In **Chapter 1** we explored the data set that set the basis for all our further analyses. We examined the most crucial columns such as `year`, `yield`, `country` and `crop`. We looked at the wide range of crops in our data set and highlighted the four crucial crops cotton, soybean, maize and rapeseed. 
+The initial two chapters established the groundwork by exploring the data set. In **Chapter 1** we explored the data set that provided the basis for all our further analyses. We examined the most crucial columns such as `year`, `yield`, `country` and `crop`. We looked at the wide range of crops in our data set and highlighted the four crucial crops cotton, soybean, maize and rapeseed. 
 In **Chapter 2** we dived deeper into our data set and looked particularly at the `yield` development of the four crucial crops. Additionally, we gained insights into the GM cultivation worldwide. 
 
 **Chapter 3** initiated the formal analysis, focusing on the effect of GM cultivation on cotton yields. We employed a DiD approach and the results indicated an average increase of $0.456$ tonnes/hectare after the introduction of GM cultivation. However, the simplicity of the approach overlooked nuances, such as GM region not explicitly implying GM cotton cultivation. 
@@ -1221,7 +1220,6 @@ Building on this, **Chapter 4** expanded our approach by incorporating rice, lea
 **Chapter 5** adopted the main specification from the underlying paper, extending the analysis to include all four crucial crops cotton, soybean, maize and rapeseed. Compared to the preceding analyses we no longer looked at two periods, but included ten-year event windows around the GM introduction of each crop in each country. Additionally, we estimated logged yields and found significant effects for cotton, soybean, and rapeseed. For instance, cotton exhibited a $4.3$ percent faster yearly yield increase in GM regions compared to Non-GM regions.
 
 In conclusion, the problem set provided valuable insights into the complex dynamic of genetic manipulation and its impact on crop yields. The step-by-step approach aimed to make the complex Triple Difference-in-Differences methodology more understandable and provide a nuanced understanding of the multiple assumptions and methodologies involved.
-
 
 <br/>
 
